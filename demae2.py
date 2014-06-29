@@ -78,14 +78,14 @@ class GPIO_write():
 
 def main():
     F710 = get_gamepad.LogicoolGamepad()
-    Arduino = Serial_write('/dev/ttyACM0', '/dev/ttyACM1')
-    #GPIO_pin = GPIO_write(18)
+    Arduino = Serial_write('/dev/ttyUSB0', '/dev/ttyUSB1')
+    GPIO_pin = GPIO_write(18)
 
     while True:
         F710.update()
 
-        #if (F710.Button_X):
-            #GPIO_pin.send_GPIO()
+        if (F710.Button_X):
+            GPIO_pin.send_GPIO()
 
         Arduino.make_serial_direction(F710)
         Arduino.make_serial_level(F710)
