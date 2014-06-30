@@ -14,7 +14,7 @@ debug = 1
 
 class Serial_write():
 
-    def __init__(self, port1, port2):
+    def __init__(self, port1):
         self.arduino1 = serial.Serial(port1, 9600)
 
         self.serial_command = ['s', 0, 'n', 0, 's', 0, 'n', 0]
