@@ -26,7 +26,7 @@ void some_action(char *str)
 
 void loop()
 {
-    if (Serial.available()) {
+    if (Serial.available() > 0) {
         char str[10];
         recv_str(str);
         some_action(str);
