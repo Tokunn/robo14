@@ -18,7 +18,7 @@ void recv_str(char *buf)
 }
 
 
-void some_action(char str);
+void some_action(char *str)
 {
     Serial.println(str);
 }
