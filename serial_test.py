@@ -14,21 +14,30 @@ def main(arduino):
         time.sleep(0.1)
 
 
+def read_serial(arduino):
+    while True:
+        chunck = ['', '', '']
+        chunck[0] = arduino.read()
+        if chunck[0] == 'S' or 'A':
+            for i in [1, 2]:
+                chunck[i] = arduino.read()
+        return chunck
+
+
 if __name__ == '__main__':
     arduino = serial.Serial('/dev/ttyACM0', 9600)
+
     while True:
-
-        print("Read SYN")
-        if arduino.read() == 'SYN':
-
+        chunck = read_serial(arduino)
+        if chunck == ['S', 'Y', 'N']:
             while True:
                 print("Write SYN/ACK")
                 arduino.write('SYN/ACK')
 
                 print("Read ACK")
-                if arduino.read() == 'ACK':
+                chunck2 = read_serial(arduino)
+                if chunck2 == ['A', 'C', 'K']:
                     main(arduino)
+                print(chunck2)
 
                 time.sleep(0.1)
-
-        time.sleep(0.1)
