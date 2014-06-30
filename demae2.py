@@ -16,7 +16,6 @@ class Serial_write():
 
     def __init__(self, port1, port2):
         self.arduino1 = serial.Serial(port1, 9600)
-        self.arduino2 = serial.Serial(port2, 9600)
 
         self.serial_command = ['s', 0, 'n', 0, 's', 0, 'n', 0]
 
@@ -56,7 +55,6 @@ class Serial_write():
 
     def send_serial(self):
         self.arduino1.write(self.serial_command)
-        self.arduino2.write(self.serial_command)
         if (debug):
             self.debug_print()
 
@@ -90,7 +88,7 @@ class GPIO_write():
 
 def main():
     F710 = get_gamepad.LogicoolGamepad()
-    Arduino = Serial_write('/dev/ttyUSB0', '/dev/ttyUSB1')
+    Arduino = Serial_write('/dev/ttyUSB0')
     GPIO_pin = GPIO_write(18)
 
     while True:
