@@ -18,28 +18,40 @@ class Serial_write():
         self.arduino1 = serial.Serial(port1, 9600)
         self.arduino2 = serial.Serial(port2, 9600)
 
-        self.serial_command = ['s', 0, 'n', 0]
+        self.serial_command = ['s', 0, 'n', 0, 's', 0, 'n', 0]
 
 
-    def make_serial_direction(self, F710):
-        if (F710.left_Axis_Y > 0):
-            self.serial_command[0] = 'f'
-        elif (F710.left_Axis_Y < 0):
-            self.serial_command[0] = 'b'
+    def make_serial_direction(self, F710, ti_or_ca):
+        command_number = []
+        Axis_left_or_rigt = ''
+
+        if (ti_or_ca == "ti"):
+            command_number = [0, 2]
+            Axis_left_or_rigt = [F710.left_Axis_Y, F710.left_Axis_X]
+        elif (ti_or_ca == "ca"):
+            command_number = [4, 6]
+            Axis_left_or_rigt = [F710.rigt_Axis_Y, F710.rigt_Axis_X]
+
+        if (Axis_left_or_rigt[0] > 0):
+            self.serial_command[command_number[0]] = 'f'
+        elif (Axis_left_or_rigt[0] < 0):
+            self.serial_command[command_number[0]] = 'b'
         else:
-            self.serial_command[0] = 's'
+            self.serial_command[command_number[0]] = 's'
 
-        if (F710.left_Axis_X > 0):
-            self.serial_command[2] = 'r'
-        elif (F710.left_Axis_X < 0):
-            self.serial_command[2] = 'l'
+        if (Axis_left_or_rigt[1] > 0):
+            self.serial_command[command_number[1]] = 'r'
+        elif (Axis_left_or_rigt[1] < 0):
+            self.serial_command[command_number[1]] = 'l'
         else:
-            self.serial_command[2] = 'n'
+            self.serial_command[command_number[1]] = 'n'
 
 
     def make_serial_level(self, F710):
         self.serial_command[1] = int(math.fabs(round(F710.left_Axis_Y * 10)))
         self.serial_command[3] = int(math.fabs(round(F710.left_Axis_X * 10)))
+        self.serial_command[5] = int(math.fabs(round(F710.rigt_Axis_Y * 10)))
+        self.serial_command[7] = int(math.fabs(round(F710.rigt_Axis_X * 10)))
 
 
     def send_serial(self):
@@ -87,7 +99,8 @@ def main():
         if (F710.Button_X):
             GPIO_pin.send_GPIO()
 
-        Arduino.make_serial_direction(F710)
+        Arduino.make_serial_direction(F710, "ti")
+        Arduino.make_serial_direction(F710, "ca")
         Arduino.make_serial_level(F710)
         Arduino.send_serial()
 
