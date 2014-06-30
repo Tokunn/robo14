@@ -4,17 +4,17 @@ void setup()
 }
 
 
-void recv_str(char *buf)
+void recv_str(char *buf, int count)
 {
     int i = 0;
     while (true) {
         if (Serial.available()) {
             buf[i] = Serial.read();
-            if (i > 7) break;
+            if (i > (count - 2)) break;
             i++;
         }
     }
-    buf[9] = '\0';
+    buf[(count - 1)] = '\0';
 }
 
 
@@ -24,16 +24,35 @@ void some_action(char *str)
 }
 
 
-void loop()
+void main()
 {
     if (Serial.available() > 0) {
         char str[10];
-        recv_str(str);
+        recv_str(str, 10);
         some_action(str);
     }
 
     else {
         char str[10] = "s0n0s0n00";
         some_action(str);
+    }
+}
+
+
+void loop()
+{
+    while (true) {
+        Serial.print("SYN");
+
+        if (Serial.available() > 0) {
+            char str_sync[8];
+            recv_str(str_sync, 8);
+
+            if (str_sync == "SYN/ACK") {
+                Serial.print("ACK");
+                main();
+            }
+        }
+        delay(100);
     }
 }
