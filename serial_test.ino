@@ -56,6 +56,6 @@ void loop()
                 main_();
             }
         }
-        delay(100);
+        delay(10);
     }
 }
