@@ -46,11 +46,11 @@ void loop()
         Serial.print('S');
 
         if (Serial.available() > 0) {
-            char str_sync[3];
-            //recv_str(str_sync, 3);
+            char str_sync;
             str_sync = Serial.read();
+            Serial.println(str_sync);
 
-            if (str_sync == "O") {
+            if (str_sync == 'O') {
                 Serial.print('A');
                 main_();
             }
