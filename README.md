@@ -1,1 +1,2 @@
-robocon2014
+OyNCT 2014 RoboconProject Term:A
+DemaeRobot Program
