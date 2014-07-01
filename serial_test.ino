@@ -73,4 +73,6 @@ void loop()
             main_();
         }
     }
+
+    Serial.print('N')
 }
