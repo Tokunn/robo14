@@ -74,5 +74,5 @@ void loop()
         }
     }
 
-    Serial.print('N')
+    Serial.print(Serial.read());
 }
