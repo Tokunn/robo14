@@ -39,7 +39,7 @@ void main_()
 }
 
 
-void loop()
+/*void loop()
 {
     while (true) {
         Serial.print("S");
@@ -60,5 +60,17 @@ void loop()
             }
         }
         delay(10);
+    }
+}*/
+
+void loop()
+{
+    if (Serial.available() > 0) {
+        if (Serial.read() == 'S') {
+            for (int i = 0; i < 10; i++) {
+                Serial.print('A');
+            }
+            main_();
+        }
     }
 }
