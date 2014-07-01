@@ -32,7 +32,7 @@ if __name__ == '__main__':
         if chunck == ['S']:
             while True:
                 print("Write SYN/ACK")
-                arduino.write('SA')
+                arduino.write('O')
 
                 print("Read ACK")
                 chunck2 = read_serial(arduino)

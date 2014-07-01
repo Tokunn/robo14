@@ -47,9 +47,10 @@ void loop()
 
         if (Serial.available() > 0) {
             char str_sync[3];
-            recv_str(str_sync, 3);
+            //recv_str(str_sync, 3);
+            str_sync = Serial.read();
 
-            if (str_sync == "SA") {
+            if (str_sync == "O") {
                 Serial.print('A');
                 main_();
             }
