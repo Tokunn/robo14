@@ -15,7 +15,6 @@ void recv_str(char *buf, int count)
         }
     }
     buf[(count - 1)] = '\0';
-    Serial.println(buf);
 }
 
 
@@ -51,7 +50,7 @@ void loop()
             Serial.println(str_sync);
 
             if (str_sync == 'O') {
-                for (i = 0; i < 10; i++) {
+                for (int i = 0; i < 10; i++) {
                     Serial.print("A");
                 }
                 main_();
