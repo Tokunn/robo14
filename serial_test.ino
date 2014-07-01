@@ -46,6 +46,7 @@ void loop()
 
         if (Serial.available() > 0) {
             char str_sync;
+
             for (int j = 0; j < 4; j++) {
                 str_sync = Serial.read();
                 Serial.println(str_sync)
