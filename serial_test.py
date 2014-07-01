@@ -10,7 +10,7 @@ def main(arduino):
     while True:
         for i in ['s0n0s0n0', 'f3r8b6l2', 'b8l3s0n0']:
             arduino.write(i)
-            print(arduino.read())
+            #print(arduino.read())
         time.sleep(0.1)
 
 
@@ -31,13 +31,11 @@ if __name__ == '__main__':
         print(chunck)
         if chunck == ['S']:
             while True:
-                print("Write SYN/ACK")
+                print("Write SYN/ACK\tRead ACK")
                 arduino.write('O')
-
-                print("Read ACK")
                 chunck2 = read_serial(arduino)
                 if chunck2 == ['A']:
                     main(arduino)
                 print(chunck2)
 
-                time.sleep(0.1)
+                time.sleep(0.05)
