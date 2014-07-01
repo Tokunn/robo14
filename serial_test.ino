@@ -15,6 +15,7 @@ void recv_str(char *buf, int count)
         }
     }
     buf[(count - 1)] = '\0';
+    Serial.println(buf);
 }
 
 
