@@ -43,7 +43,7 @@ void main_()
 void loop()
 {
     while (true) {
-        Serial.print('S');
+        Serial.print("SSSS");
 
         if (Serial.available() > 0) {
             char str_sync;
@@ -51,7 +51,7 @@ void loop()
             Serial.println(str_sync);
 
             if (str_sync == 'O') {
-                Serial.print('A');
+                Serial.print("AAAA");
                 main_();
             }
         }
