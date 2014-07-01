@@ -48,7 +48,6 @@ void loop()
             char str_sync;
             for (int j = 0; j < 4; j++) {
                 str_sync = Serial.read();
-                Serial.println(str_sync);
 
                 if (str_sync == 'O') {
                     for (int i = 0; i < 10; i++) {
