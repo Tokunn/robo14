@@ -46,14 +46,16 @@ void loop()
 
         if (Serial.available() > 0) {
             char str_sync;
-            str_sync = Serial.read();
-            Serial.println(str_sync);
+            for (int j = 0; j < 4; j++) {
+                str_sync = Serial.read();
+                Serial.println(str_sync);
 
-            if (str_sync == 'O') {
-                for (int i = 0; i < 10; i++) {
-                    Serial.print("A");
+                if (str_sync == 'O') {
+                    for (int i = 0; i < 10; i++) {
+                        Serial.print("A");
+                    }
+                    main_();
                 }
-                main_();
             }
         }
         delay(10);
