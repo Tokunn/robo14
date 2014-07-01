@@ -51,7 +51,9 @@ void loop()
             Serial.println(str_sync);
 
             if (str_sync == 'O') {
-                Serial.print("A");
+                for (i = 0; i < 10; i++) {
+                    Serial.print("A");
+                }
                 main_();
             }
         }
