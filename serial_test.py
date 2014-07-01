@@ -16,12 +16,10 @@ def main(arduino):
 
 def read_serial(arduino):
     while True:
-        chunck = ['', '', '']
+        chunck = ['']
         chunck[0] = arduino.read()
         if chunck[0] == 'S' or 'A':
-            for i in [1, 2]:
-                chunck[i] = arduino.read()
-        return chunck
+            return chunck
 
 
 if __name__ == '__main__':
@@ -29,14 +27,16 @@ if __name__ == '__main__':
 
     while True:
         chunck = read_serial(arduino)
-        if chunck == ['S', 'Y', 'N']:
+        print("Read SYN")
+        print(chunck)
+        if chunck == ['S']:
             while True:
                 print("Write SYN/ACK")
-                arduino.write('SYN/ACK')
+                arduino.write('SA')
 
                 print("Read ACK")
                 chunck2 = read_serial(arduino)
-                if chunck2 == ['A', 'C', 'K']:
+                if chunck2 == ['A']:
                     main(arduino)
                 print(chunck2)
 

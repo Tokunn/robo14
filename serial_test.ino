@@ -25,7 +25,7 @@ void some_action(char *str)
 }
 
 
-void main()
+void main_()
 {
     if (Serial.available() > 0) {
         char str[10];
@@ -43,15 +43,15 @@ void main()
 void loop()
 {
     while (true) {
-        Serial.print("SYN");
+        Serial.print('S');
 
         if (Serial.available() > 0) {
-            char str_sync[8];
-            recv_str(str_sync, 8);
+            char str_sync[3];
+            recv_str(str_sync, 3);
 
-            if (str_sync == "SYN/ACK") {
-                Serial.print("ACK");
-                main();
+            if (str_sync == "SA") {
+                Serial.print('A');
+                main_();
             }
         }
         delay(100);
