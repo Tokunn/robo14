@@ -60,6 +60,7 @@ class Serial_write():
 
 
     def send_serial(self):
+        self.serial_command = ''.join(self.serial_command)
         self.arduino1.write(self.serial_command)
         if (debug):
             self.debug_print()
