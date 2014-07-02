@@ -23,4 +23,5 @@ void loop()
 {
     char str[10] = "s0n0s0n00";
     recv_str(str);
+    Serial.print(str);
 }

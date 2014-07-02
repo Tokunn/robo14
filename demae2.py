@@ -67,6 +67,7 @@ class Serial_write():
 
     def debug_print(self):
         print(self.serial_command)
+        print(self.arduino1.read())
 
 
 
