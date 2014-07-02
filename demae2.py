@@ -16,7 +16,7 @@ class Serial_write():
     def __init__(self, port1):
         self.arduino1 = serial.Serial(port1, 9600)
 
-        self.serial_command = ['$', 's', 0, 'n', 0, 's', 0, 'n', 0, 0]
+        self.serial_command = ['$', 's', '0', 'n', '0', 's', '0', 'n', '0', '0']
 
 
     def make_serial_direction(self, F710, ti_or_ca):
@@ -46,17 +46,17 @@ class Serial_write():
 
 
     def make_serial_level(self, F710):
-        self.serial_command[2] = int(math.fabs(round(F710.left_Axis_Y * 10)))
-        self.serial_command[4] = int(math.fabs(round(F710.left_Axis_X * 10)))
-        self.serial_command[6] = int(math.fabs(round(F710.rigt_Axis_Y * 10)))
-        self.serial_command[8] = int(math.fabs(round(F710.rigt_Axis_X * 10)))
+        self.serial_command[2] = str(int(math.fabs(round(F710.left_Axis_Y * 10))))
+        self.serial_command[4] = str(int(math.fabs(round(F710.left_Axis_X * 10))))
+        self.serial_command[6] = str(int(math.fabs(round(F710.rigt_Axis_Y * 10))))
+        self.serial_command[8] = str(int(math.fabs(round(F710.rigt_Axis_X * 10))))
 
 
     def make_serial_updown(self, F710):
         if (F710.Button_X):
-            self.serial_command[9] = 1
+            self.serial_command[9] = '1'
         else:
-            self.serial_command[9] = 0
+            self.serial_command[9] = '0'
 
 
     def send_serial(self):
