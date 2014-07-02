@@ -66,8 +66,8 @@ class Serial_write():
 
 
     def debug_print(self):
-        print(self.serial_command)
-        print(self.arduino1.read())
+        print("\t\t\t\t\t{0}".format(self.serial_command))
+        #print("\t\t\t{0}".format(self.arduino1.read()))
 
 
 
