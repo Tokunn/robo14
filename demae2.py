@@ -8,7 +8,6 @@ import subprocess
 import get_gamepad
 import RPi.GPIO as GPIO
 
-
 debug = 1
 
 
@@ -64,38 +63,15 @@ class Serial_write():
 
 
 
-class GPIO_write():
-    
-    def __init__(self, pin):
-        self.pin = pin
-
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(self.pin, False)
-
-    def send_GPIO(self):
-        GPIO.output(self.pin, True)
-        time.sleep(0.05)
-        GPIO.output(self.pin, False)
-        if (debug):
-            self.debug_print()
-
-
-    def debug_print(self):
-        print(self.pin)
-
-
-
 def main():
     F710 = get_gamepad.LogicoolGamepad()
     Arduino = Serial_write('/dev/ttyUSB0')
-    GPIO_pin = GPIO_write(18)
 
     while True:
         F710.update()
 
         if (F710.Button_X):
-            GPIO_pin.send_GPIO()
+            pass
 
         Arduino.make_serial_direction(F710, "ti")
         Arduino.make_serial_direction(F710, "ca")
