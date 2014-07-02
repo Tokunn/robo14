@@ -6,7 +6,6 @@ import serial
 import decimal
 import subprocess
 import get_gamepad
-import RPi.GPIO as GPIO
 
 debug = 1
 
