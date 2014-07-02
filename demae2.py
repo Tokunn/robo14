@@ -8,6 +8,7 @@ import subprocess
 import get_gamepad
 
 debug = 1
+arduino_port = '/dev/ttyACM0'
 
 
 class Serial_write():
@@ -15,7 +16,7 @@ class Serial_write():
     def __init__(self, port1):
         self.arduino1 = serial.Serial(port1, 9600)
 
-        self.serial_command = ['s', 0, 'n', 0, 's', 0, 'n', 0]
+        self.serial_command = ['s', 0, 'n', 0, 's', 0, 'n', 0, 0]
 
 
     def make_serial_direction(self, F710, ti_or_ca):
@@ -51,6 +52,13 @@ class Serial_write():
         self.serial_command[7] = int(math.fabs(round(F710.rigt_Axis_X * 10)))
 
 
+    def make_serial_updown(self, F710):
+        if (F710.Button_X):
+            self.serial_command[8] = 1
+        else:
+            self.serial_command[8] = 0
+
+
     def send_serial(self):
         self.arduino1.write(self.serial_command)
         if (debug):
@@ -64,17 +72,15 @@ class Serial_write():
 
 def main():
     F710 = get_gamepad.LogicoolGamepad()
-    Arduino = Serial_write('/dev/ttyUSB0')
+    Arduino = Serial_write(arduino_port)
 
     while True:
         F710.update()
 
-        if (F710.Button_X):
-            pass
-
         Arduino.make_serial_direction(F710, "ti")
         Arduino.make_serial_direction(F710, "ca")
         Arduino.make_serial_level(F710)
+        Arduino.make_serial_updown(F710)
         Arduino.send_serial()
 
         if (F710.Button_Back + F710.Button_Strt == 2):
