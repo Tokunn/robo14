@@ -8,11 +8,13 @@ void setup()
 void recv_str(char *buf)
 {
     if (Serial.available()) {
-        int i = 0;
-        for(int i = 0; i < 9; i++) {
-            buf[i] = Serial.read();
+        if (Serial.read() == '$') {
+            int i = 0;
+            for(int i = 0; i < 9; i++) {
+                buf[i] = Serial.read();
+            }
+            buf[9] = '\0';
         }
-        buf[9] = '\0';
     }
 }
 

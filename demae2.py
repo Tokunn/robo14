@@ -16,7 +16,7 @@ class Serial_write():
     def __init__(self, port1):
         self.arduino1 = serial.Serial(port1, 9600)
 
-        self.serial_command = ['$', 's', 0, 'n', 0, 's', 0, 'n', 0, 0, '@']
+        self.serial_command = ['$', 's', 0, 'n', 0, 's', 0, 'n', 0, 0]
 
 
     def make_serial_direction(self, F710, ti_or_ca):
