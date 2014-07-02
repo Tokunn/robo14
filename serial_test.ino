@@ -1,12 +1,7 @@
-#include <LiquidCrystal.h>
-
-LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2);
-
-
 void setup()
 {
     Serial.begin(9600);
-    lcd.print("Standby");
+    pinMode(8, OUTPUT);
 }
 
 
@@ -28,5 +23,12 @@ void loop()
 {
     char str[10] = "s0n0s0n00";
     recv_str(str);
-    lcd.print(str);
+
+    if (str[0] != 's') {
+        digitalWrite(8, HIGH);
+    }
+    else {
+        digitalWrite(8, LOW);
+    }
+        
 }
