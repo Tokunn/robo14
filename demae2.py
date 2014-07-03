@@ -9,6 +9,7 @@ import get_gamepad
 
 debug = 1
 arduino_port = '/dev/ttyACM0'
+#arduino_port = '/dev/ttyUSB0'
 
 
 class Serial_write():
@@ -16,17 +17,19 @@ class Serial_write():
     def __init__(self, port1):
         self.arduino1 = serial.Serial(port1, 9600)
 
-        self.serial_command = ['$', 's', '0', 'n', '0', 's', '0', 'n', '0', '0']
 
 
     def make_serial_direction(self, F710, ti_or_ca):
+
+
         command_number = []
         Axis_left_or_rigt = ''
 
-        if (ti_or_ca == "ti"):
+        if (ti_or_ca == "tire"):
             command_number = [1, 3]
             Axis_left_or_rigt = [F710.left_Axis_Y, F710.left_Axis_X]
-        elif (ti_or_ca == "ca"):
+            self.serial_command = ['$', 's', '0', 'n', '0', 's', '0', 'n', '0', '0']
+        elif (ti_or_ca == "catarpillar"):
             command_number = [5, 7]
             Axis_left_or_rigt = [F710.rigt_Axis_Y, F710.rigt_Axis_X]
 
@@ -68,7 +71,7 @@ class Serial_write():
 
     def debug_print(self):
         print("\t\t\t\t\t{0}".format(self.serial_command))
-        #print("\t\t\t{0}".format(self.arduino1.read()))
+        print("\t\t\t{0}".format(self.arduino1.read()))
 
 
 
@@ -79,8 +82,8 @@ def main():
     while True:
         F710.update()
 
-        Arduino.make_serial_direction(F710, "ti")
-        Arduino.make_serial_direction(F710, "ca")
+        Arduino.make_serial_direction(F710, "tire")
+        Arduino.make_serial_direction(F710, "catarpillar")
         Arduino.make_serial_level(F710)
         Arduino.make_serial_updown(F710)
         Arduino.send_serial()
@@ -89,8 +92,8 @@ def main():
             subprocess.call("sudo shutdown -h now".split())
             return 0
 
-        time.sleep(0.05)
-
+        print("as;lkjdfal")
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
