@@ -21,7 +21,7 @@ class Serial_write():
 
         self.make_serial_direction(F710, "tire")
         self.make_serial_direction(F710, "catarpillar")
-        self.make_serial_level2(F710)
+        self.make_serial_level(F710)
         self.make_serial_updown(F710)
 
 
@@ -59,6 +59,11 @@ class Serial_write():
         self.serial_command[6] = str(int(math.fabs(round(F710.rigt_Axis_Y * 10))))
         self.serial_command[8] = str(int(math.fabs(round(F710.rigt_Axis_X * 10))))
 
+        for i in [2, 4, 6, 8]:
+            if self.serial_command[i] == '10':
+                self.serial_command[i] = '9'
+                
+
     def make_serial_level2(self, F710):
         pass
 
@@ -91,7 +96,7 @@ def main():
             subprocess.call("sudo shutdown -h now".split())
             return 0
 
-        time.sleep(0.3)
+        time.sleep(0.05)
 
 
 if __name__ == '__main__':
