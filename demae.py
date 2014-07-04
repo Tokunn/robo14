@@ -16,7 +16,7 @@ class Serial_write():
         self.arduino = serial.Serial(arduino_port, 9600)
 
     def make_serial(self):
-        self.serial_command = "$s0n0s0n00"
+        self.serial_command = "$f0n0s0n00"
 
     def send_serial(self):
         self.arduino.write(self.serial_command)
