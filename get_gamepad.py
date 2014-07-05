@@ -1,3 +1,11 @@
+#!/usr/bin/env python2
+
+
+### This program is made for DEMAEROBOT and UKETORIROBOT by Tokunn
+### 2014 OyNCT Robocon Ateam Tsushin
+### H26 Jul. 5
+
+
 import time
 import pygame
 import decimal

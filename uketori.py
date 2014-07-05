@@ -1,8 +1,8 @@
 #!/usr/bin/env python2
 
 
-### This program is made for DEMAEROBOT by Tokunn
-### 2014 OyNCT Robocon Ateam TsuShin
+### This program is made for UKETORIROBOT by Tokunn
+### 2014 OyNCT Robocon Ateam Tsushin
 ### H26 Jul. 5
 
 
@@ -29,7 +29,8 @@ class Serial_write():
         self.make_serial_direction(F710, "tire")
         self.make_serial_direction(F710, "catarpillar")
         self.make_serial_level(F710)
-        self.make_serial_updown(F710)
+        self.make_serial_openclose(F710)
+        self.make_serial_turn(F710)
 
 
     def make_serial_direction(self, F710, ti_or_ca):
@@ -71,21 +72,20 @@ class Serial_write():
                 self.serial_command[i] = '9'
                 
 
-    def make_serial_updown(self, F710):
+    def make_serial_openclose(self, F710):
         if (F710.Button_X):
             self.serial_command[9] = '1'
         else:
             self.serial_command[9] = '0'
 
-        if (F710.Button_A):
-            self.serial_command[10] = '1'
-        else:
-            self.serial_command[10] = '0'
 
-        if (F710.Button_B):
-            self.serial_command[11] = '1'
+    def make_serial_turn(self, F710):
+        if (F710.Hat_X == 1):
+            self.serial_command[10] = 'r'
+        elif (F710.Hat_X == -1):
+            self.serial_command[10] = 'l'
         else:
-            self.serial_command[11] = '0'
+            self.serial_command[10] = 'n'
 
 
     def send_serial(self):
