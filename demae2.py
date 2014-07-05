@@ -9,6 +9,7 @@ import get_gamepad
 
 debug = 1
 arduino_port = '/dev/ttyACM0'
+#arduino_port = '/dev/ttyUSB0'
 
 
 class Serial_write():
@@ -16,7 +17,6 @@ class Serial_write():
     def __init__(self, port1):
         self.arduino1 = serial.Serial(port1, 9600)
 
-        self.serial_command = ['$', 's', '0', 'n', '0', 's', '0', 'n', '0', '0']
 
 
     def make_serial_direction(self, F710, ti_or_ca):
@@ -26,6 +26,7 @@ class Serial_write():
         if (ti_or_ca == "ti"):
             command_number = [1, 3]
             Axis_left_or_rigt = [F710.left_Axis_Y, F710.left_Axis_X]
+            self.serial_command = ['$', 's', '0', 'n', '0', 's', '0', 'n', '0', '0']
         elif (ti_or_ca == "ca"):
             command_number = [5, 7]
             Axis_left_or_rigt = [F710.rigt_Axis_Y, F710.rigt_Axis_X]
@@ -89,7 +90,8 @@ def main():
             subprocess.call("sudo shutdown -h now".split())
             return 0
 
-        time.sleep(0.05)
+        #time.sleep(0.05)
+        time.sleep(0.5)
 
 
 
