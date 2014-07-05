@@ -15,6 +15,8 @@ import get_gamepad
 
 #arduino_port = '/dev/ttyACM0'
 arduino_port = '/dev/ttyUSB0'
+gamepad_assignment = ['X', 'A', 'B']    # Type [Y A B X LB RB LT RT]
+                                        # [Front, Rea, All]
 
 
 class Serial_write():
@@ -72,17 +74,26 @@ class Serial_write():
                 
 
     def make_serial_updown(self, F710):
-        if (F710.Button_X):
+        gamepad_assignment_value = {'Y':F710.Button_Y,
+                                    'A':F710.Button_X,
+                                    'B':F710.Button_B,
+                                    'X':F710.Button_X,
+                                    'LB':F710.left_Bumper,
+                                    'RB':F710.rigt_Bumper,
+                                    'LT':F710.left_Trigger,
+                                    'RT':F710.rigt_Trigger}
+
+        if (gamepad_assignment_value[gamepad_assignment[0]]):
             self.serial_command[9] = '1'
         else:
             self.serial_command[9] = '0'
 
-        if (F710.Button_A):
+        if (gamepad_assignment_value[gamepad_assignment[1]]):
             self.serial_command[10] = '1'
         else:
             self.serial_command[10] = '0'
 
-        if (F710.Button_B):
+        if (gamepad_assignment_value[gamepad_assignment[2]]):
             self.serial_command[11] = '1'
         else:
             self.serial_command[11] = '0'
