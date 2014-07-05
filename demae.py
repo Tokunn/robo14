@@ -18,7 +18,7 @@ class Serial_write():
 
 
     def serial_update(self, F710):
-        self.serial_command = ['$', 'f', '0', 'n', '0', 's', '0', 'n', '0', '0']
+        self.serial_command = ['$', 'f', '0', 'n', '0', 's', '0', 'n', '0', '0', '0', '0']
 
         self.make_serial_direction(F710, "tire")
         self.make_serial_direction(F710, "catarpillar")
@@ -74,6 +74,16 @@ class Serial_write():
             self.serial_command[9] = '1'
         else:
             self.serial_command[9] = '0'
+
+        if (F710.Button_A):
+            self.serial_command[10] = '1'
+        else:
+            self.serial_command[10] = '0'
+
+        if (F710.Button_B):
+            self.serial_command[11] = '1'
+        else:
+            self.serial_command[11] = '0'
 
 
     def send_serial(self):
