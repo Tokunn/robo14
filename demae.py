@@ -7,7 +7,8 @@ import subprocess
 import get_gamepad
 
 
-arduino_port = '/dev/ttyACM0'
+#arduino_port = '/dev/ttyACM0'
+arduino_port = '/dev/ttyUSB0'
 
 
 class Serial_write():
