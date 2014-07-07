@@ -25,7 +25,6 @@ class Serial_write():
 
     def __init__(self):
         self.arduino = serial.Serial(arduino_port, 9600)
-
         self.file_flag_onoff = False
         self.file_flag_written = True
         self.file_list = []
