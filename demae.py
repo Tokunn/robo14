@@ -31,7 +31,7 @@ class Serial_write():
 
 
     def serial_update(self, F710):
-        self.serial_command = ['$', 'f', '0', 'n', '0', 's', '0', 'n', '0', '0', '0', '0']
+        self.serial_command = ['$', 's', '0', 's', '0', '0', '0', '0']
 
         self.gamepad_assignment_value = {'Y':F710.Button_Y,
                                          'A':F710.Button_X,
@@ -43,7 +43,7 @@ class Serial_write():
                                          'RT':F710.rigt_Trigger}
 
         self.make_serial_direction(F710, "tire")
-        self.make_serial_direction(F710, "catarpillar")
+        self.make_serial_direction(F710, "cata")
         self.make_serial_level(F710)
         self.make_serial_updown(F710)
         
@@ -52,39 +52,30 @@ class Serial_write():
 
     def make_serial_direction(self, F710, ti_or_ca):
         command_number = []
-        Axis_left_or_rigt = ''
+        Axis_tire_cata = ''
 
         if (ti_or_ca == "tire"):
             command_number = [1, 3]
-            Axis_left_or_rigt = [F710.left_Axis_Y, F710.left_Axis_X]
-        elif (ti_or_ca == "catarpillar"):
+            Axis_tire_cata = [F710.left_Axis_Y, F710.left_Axis_X]
+        elif (ti_or_ca == "cata"):
             command_number = [5, 7]
-            Axis_left_or_rigt = [F710.rigt_Axis_Y, F710.rigt_Axis_X]
+            Axis_tire_cata = [F710.rigt_Axis_Y, F710.rigt_Axis_X]
 
-        if (Axis_left_or_rigt[0] > 0):
-            self.serial_command[command_number[0]] = 'f'
-        elif (Axis_left_or_rigt[0] < 0):
-            self.serial_command[command_number[0]] = 'b'
-        else:
-            self.serial_command[command_number[0]] = 's'
-
-        if (Axis_left_or_rigt[1] > 0):
-            self.serial_command[command_number[1]] = 'r'
-        elif (Axis_left_or_rigt[1] < 0):
-            self.serial_command[command_number[1]] = 'l'
-        else:
-            self.serial_command[command_number[1]] = 'n'
-
-
+        self.speed = int(round(Axis_tire_cata[0] * 10))
+        self.curv = int(round(Axis_tire_cata[1] * 3))
+        self.curv_left = self.speed + self.curv
+        self.curv_rigt = self.speed - self.curv
+        for curv in [[self.curv_left, self.curv_rigt], [self.curv_rigt, self.curv_left]]:
+            if (curv[0] > 10):
+                curv[1] += 10 - curv[0]
+            elif (curv[0] < -10):
+                curv[1] -= 10 + curv[0]
+                
 
 
     def make_serial_level(self, F710):
-        self.serial_command[2] = str(int(math.fabs(round(F710.left_Axis_Y * 10))))
-        self.serial_command[4] = str(int(math.fabs(round(F710.left_Axis_X * 10))))
-        self.serial_command[6] = str(int(math.fabs(round(F710.rigt_Axis_Y * 10))))
-        self.serial_command[8] = str(int(math.fabs(round(F710.rigt_Axis_X * 10))))
 
-        for i in [2, 4, 6, 8]:
+        for i in [2, 4]:
             if self.serial_command[i] == '10':
                 self.serial_command[i] = '9'
                 
@@ -92,19 +83,21 @@ class Serial_write():
     def make_serial_updown(self, F710):
 
         if (self.gamepad_assignment_value[gamepad_assignment[0]]):
-            self.serial_command[9] = '1'
+            self.serial_command[5] = '1'
         else:
-            self.serial_command[9] = '0'
+            self.serial_command[5] = '0'
 
         if (self.gamepad_assignment_value[gamepad_assignment[1]]):
-            self.serial_command[10] = '1'
+            self.serial_command[6] = '1'
         else:
-            self.serial_command[10] = '0'
+            self.serial_command[6] = '0'
 
         if (self.gamepad_assignment_value[gamepad_assignment[2]]):
-            self.serial_command[11] = '1'
+            self.serial_command[7] = '1'
         else:
-            self.serial_command[11] = '0'
+            self.serial_command[7] = '0'
+
+
 
 
     def check_file_onoff(self, F710):
@@ -157,7 +150,7 @@ def main():
             subprocess.call("sudo shutdown -h now".split())
             return 0
 
-        time.sleep(0.05)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':
