@@ -159,7 +159,7 @@ def main():
         if (F710.Button_Back + F710.Button_Strt == 2):
             subprocess.call("sudo shutdown -h now".split())
             return 0
-        time.sleep(0.1)
+        time.sleep(0.5)
 
 
 
