@@ -12,17 +12,17 @@ void recv_str(char *buf)
 {
     if (Serial.read() == '$') {
         int i = 0;
-        for(int i = 0; i < 9; i++) {
+        for(int i = 0; i < 11; i++) {
             buf[i] = Serial.read();
         }
-        buf[9] = '\0';
+        buf[11] = '\0';
     }
 }
 
 
 void loop()
 {
-    char str[10] = "s0n0s0n00";
+    char str[12] = "s0s0s0s0000";
     if (Serial.available()) {
         recv_str(str);
     }
