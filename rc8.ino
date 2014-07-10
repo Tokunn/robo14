@@ -31,7 +31,7 @@ void recv_str(char *buf)
 {
   int i = 0;
   char c;
-  while (1) {
+  while (true) {
     if (Serial.available()) {
       c = Serial.read();
       buf[i] = c;
@@ -46,7 +46,7 @@ void recv_str(char *buf)
 void make_list(char *buf, int *list)
 {
   switch(buf[0]){
-    case '0':
+    case 's':
       list[0] = 0;
       break;
     case 'f':
@@ -60,36 +60,22 @@ void make_list(char *buf, int *list)
       break;
   }
   switch(buf[1]){
-    case 's':
-      list[1] = 0;
-      break;
-    case 'l':
-      list[1] = 1;
-      break;
-    case 'r':
-      list[1] = 2;
-      break;
-    default:
-      list[1] = 0;
-      break;
-  }
-  switch(buf[2]){
-    case '1':
+    case '4':
       list[2] = 0;
       break;
-    case '2':
+    case '5':
       list[2] = 1;
       break;
-    case '3':
+    case '6':
       list[2] = 2;
       break;
-    case '4':
+    case '7':
       list[2] = 3;
       break;
-    case '5':
+    case '8':
       list[2] = 4;
       break;
-    case '6':
+    case '9':
       list[2] = 5;
       break;
     default:
@@ -104,11 +90,8 @@ void action(int *list)
   for (int i = 0; i < 2; i++){
     digitalWrite(fro_rea[i], fb_dec[list[0]][i]);
   }
-  for (int i = 0; i < 2; i++){
-    digitalWrite(lef_rig[i], lr_dec[list[1]][i]);
-  }
   for (int i = 0; i < 3; i++){
-    digitalWrite(speed[i], speed_dec[list[2]][i]);
+    digitalWrite(speed[i], speed_dec[list[1]][i]);
   }
 }
 
