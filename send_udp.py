@@ -5,6 +5,19 @@ import socket
 import time
 from contextlib import closing
 
+class Send_UDP(self):
+    
+    def __init__(self, ip_add):
+
+        self.host = ip_add
+        self.port = 4000
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def send_command(command):
+
+        print(command)
+        self.sock.sendto(command, (self.host, self.port))
+
 def main1():
     host = '127.0.0.1'
     port = 4000
