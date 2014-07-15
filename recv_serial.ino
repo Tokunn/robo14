@@ -7,7 +7,6 @@ void setup()
     digitalWrite(6, HIGH);
 }
 
-
 void recv_str(char *buf)
 {
     if (Serial.read() == '$') {
@@ -18,7 +17,6 @@ void recv_str(char *buf)
         buf[11] = '\0';
     }
 }
-
 
 void loop()
 {
@@ -46,5 +44,4 @@ void loop()
     }
 
     //delay(50);
-        
 }

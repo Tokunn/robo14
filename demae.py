@@ -1,10 +1,8 @@
 #!/usr/bin/env python2
 
-
 ### This program is made for DEMAEROBOT by Tokunn
 ### 2014 OyNCT Robocon Ateam TsuShin
 ### H26 Jul. 7
-
 
 import os
 import time
@@ -14,12 +12,9 @@ import datetime
 import subprocess
 import get_gamepad
 
-
 arduino_port = '/dev/ttyACM0'
 #arduino_port = '/dev/ttyUSB0'
 gamepad_assignment = ['X', 'A', 'B', 'RB', 'LB']    # Type [Y A B X LB RB LT RT]
-                                                    # [Front, Rea, All, Record_Start, Record_Stop]
-
 
 class Serial_write():
 
@@ -28,7 +23,6 @@ class Serial_write():
         self.file_flag_onoff = False
         self.file_flag_written = True
         self.file_list = []
-
 
     def serial_update(self, F710):
         self.serial_command = ['$', 's', '0', 's', '0','s', '0', 's', '0', '0', '0', '0']
@@ -47,9 +41,7 @@ class Serial_write():
         self.make_serial_updown(F710)
         self.check_file_onoff(F710)
 
-
     def make_serial_direction(self, F710, ti_or_ca):
-
         com_num = []
         Axis_tire_cata = ''
 
@@ -74,7 +66,6 @@ class Serial_write():
                 self.serial_command[ com_num2[1] ] -= 10 + self.serial_command[ com_num2[0] ]
                 self.serial_command[ com_num2[0] ] = -10
 
-
         for com_num3 in [ com_num[0], com_num[1] ]:
             if (self.serial_command[ com_num3 ] == 0):
                 self.serial_command[ com_num3 - 1 ] = 's'
@@ -89,9 +80,7 @@ class Serial_write():
 
             self.serial_command[ com_num3 ] = str(int(self.serial_command[ com_num3 ]))
 
-
     def make_serial_updown(self, F710):
-
         if (self.gamepad_assignment_value[gamepad_assignment[0]]):
             self.serial_command[9] = '1'
         else:
@@ -107,9 +96,6 @@ class Serial_write():
         else:
             self.serial_command[11] = '0'
 
-
-
-
     def check_file_onoff(self, F710):
         if(self.gamepad_assignment_value[gamepad_assignment[3]]):
             self.file_flag_onoff = True
@@ -120,7 +106,6 @@ class Serial_write():
 
         elif(self.gamepad_assignment_value[gamepad_assignment[4]]):
             self.file_flag_onoff = False
-
 
     def write_add_file(self):
         if(self.file_flag_onoff == True and self.file_flag_written == False):
@@ -137,17 +122,12 @@ class Serial_write():
 
             self.file_list = []
 
-
     def send_serial(self):
         self.serial_command = ''.join(self.serial_command)
         self.arduino.write(self.serial_command)
         print("\t\t\t\t\t{0}".format(self.serial_command))
 
-
-
-
 def main():
-
     Arduino = Serial_write()
     F710 = get_gamepad.LogicoolGamepad()
 
@@ -160,8 +140,6 @@ def main():
             subprocess.call("sudo shutdown -h now".split())
             return 0
         time.sleep(0.1)
-
-
 
 if __name__ == '__main__':
     try:

@@ -1,21 +1,17 @@
 #!/usr/bin/env python2
 
-
 ### This program is made for DEMAEROBOT and UKETORIROBOT by Tokunn
 ### 2014 OyNCT Robocon Ateam Tsushin
 ### H26 Jul. 5
-
 
 import time
 import pygame
 import decimal
 from pygame.locals import *
 
-
 class LogicoolGamepad:
 
     def __init__(self):
-
         pygame.joystick.init()
         pygame.init()
         if pygame.joystick.get_count() == 0:
@@ -24,9 +20,7 @@ class LogicoolGamepad:
         self.joys = pygame.joystick.Joystick(0)
         self.joys.init()
 
-
     def update(self):
-
         self.eventlist = pygame.event.get()
 
         self.raw_left_Axis_X = self.joys.get_axis(0)
@@ -55,9 +49,7 @@ class LogicoolGamepad:
 
         self.convart_rawvalue()
 
-
     def convart_rawvalue(self):
-
         self.left_Axis_X = self.rounds(self.raw_left_Axis_X)
         self.left_Axis_Y = self.rounds(self.raw_left_Axis_Y * -1)
         self.rigt_Axis_X = self.rounds(self.raw_rigt_Axis_X)
@@ -82,22 +74,17 @@ class LogicoolGamepad:
         self.left_Push = self.raw_left_Push
         self.rigt_Push = self.raw_rigt_Push
 
-
     def rounds(self, raw_Axiss):
-
         self.handred_Axiss = raw_Axiss * 100
         self.round_Axiss = round(self.handred_Axiss)
         self.converted_Axiss = self.round_Axiss / 100
         return self.converted_Axiss
 
-
     def prints(self):
-        
         print("\n")
         print(self.Hat_X)
         print(self.Hat_Y)
         print("\n")
-
 
 class GamepadError(Exception):
     def __init__(self, message):
@@ -105,8 +92,6 @@ class GamepadError(Exception):
     def __str__(self):
         return repr(self.message)
         
-
-
 if __name__ == '__main__':
     try:
         F710 = LogicoolGamepad()
