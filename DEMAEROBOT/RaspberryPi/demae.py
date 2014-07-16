@@ -11,18 +11,27 @@ import serial
 import datetime
 import subprocess
 import get_gamepad
+import send_udp_command
 
-arduino_port = '/dev/ttyACM0'
+#arduino_port = '/dev/ttyACM0'
 #arduino_port = '/dev/ttyUSB0'
+
+arduino_addr = '127.0.0.1'
+arduino_port = 4000
+
 gamepad_assignment = ['X', 'A', 'B', 'RB', 'LB']    # Type [Y A B X LB RB LT RT]
 
-class Serial_write():
+class Command_write():
 
-    def __init__(self):
-        self.arduino = serial.Serial(arduino_port, 9600)
+    def __init__(self, terecom_type):
         self.file_flag_onoff = False
         self.file_flag_written = True
         self.file_list = []
+
+        if (terecom_type == 'SERIAL'):
+            self.arduino = serial.Serial(arduino_port, 9600)
+        elif (terecom_type == 'NW'):
+            self.arduino = Send_UDP(arduino_addr, arduino_port)
 
     def serial_update(self, F710):
         self.serial_command = ['$', 's', '0', 's', '0','s', '0', 's', '0', '0', '0', '0']
@@ -128,14 +137,15 @@ class Serial_write():
         print("\t\t\t\t\t{0}".format(self.serial_command))
 
 def main():
-    Arduino = Serial_write()
+    Arduino = Command_write('NW')
     F710 = get_gamepad.LogicoolGamepad()
 
     while True:
         F710.update()
-        Arduino.serial_update(F710)
-        Arduino.send_serial()
+        Arduino.command_update(F710)
+        Arduino.send_command()
         Arduino.write_add_file()
+
         if (F710.Button_Back + F710.Button_Strt == 2):
             subprocess.call("sudo shutdown -h now".split())
             return 0
@@ -144,9 +154,7 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-
     except get_gamepad.GamepadError:
         print("\nGamepadDevice not found !!")
-
     except KeyboardInterrupt:
         print("\nexit")
