@@ -4,10 +4,8 @@
 ### 2014 OyNCT Robocon Ateam Tsushin
 ### H26 Jul. 15
 
-from __future__ import print_function
 import time
 import socket
-from contextlib import closing
 
 class Send_UDP():
 
@@ -20,12 +18,18 @@ class Send_UDP():
         print(command)
         self.sock.sendto(command, (self.host, self.port))
 
-if __name__ == '__main__':
+def main():
     ip_add = "127.0.0.1"
     port = 4000
     UDP = Send_UDP(ip_add, port)
-
     while True:
         udp_command = "$f3s0"
         UDP.send_command(udp_command)
         time.sleep(0.05)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n")
+        quit
