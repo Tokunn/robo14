@@ -5,13 +5,16 @@
 ###     Designed On 2014.Jul.15 By Tokunn
 ###     Update On 2014.Jul.15 By Tokunn make
 
-import get_gamepad
+import os
+import sys
 import time
 import math
-import datetime
-import os
-import subprocess
 import serial
+import datetime
+import subprocess
+
+sys.path.append( 'Include' )
+import get_gamepad
 import send_udp_command
 import send_serial_command
 
@@ -43,10 +46,8 @@ class MakeCommand():
 
     def __convertAngleToRote( self ):
         self.__speedsValue[ self.STEERING_VALUE ] *= 0.3
-        self.__command[ self.__LEFT_VALUE ] = self.__speedsValue[ self.SPEED_VALUE ]
-                                            + self.__speedsValue[ self.STEERING_VALUE ]
-        self.__command[ self.__RIGT_VALUE ] = self.__speedsValue[ self.SPEED_VALUE ]
-                                            - self.__speedsValue[ self.STEERING_VALUE ]
+        self.__command[ self.__LEFT_VALUE ] = self.__speedsValue[ self.SPEED_VALUE ] + self.__speedsValue[ self.STEERING_VALUE ]
+        self.__command[ self.__RIGT_VALUE ] = self.__speedsValue[ self.SPEED_VALUE ] - self.__speedsValue[ self.STEERING_VALUE ]
 
     def __convertToString( self ):
         self.__command = ''.join(self.__commnad)
