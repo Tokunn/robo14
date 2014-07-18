@@ -1,53 +1,68 @@
-#include <SPI.h>
+
+#include <SPI.h>         // needed for Arduino versions later than 0018
 #include <Ethernet.h>
-#include <Udp.h>
+#include <EthernetUdp.h>         // UDP library from: bjoern@cs.stanford.edu 12/30/2008
 
-#define LED 9
 
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x0F, 0x8B, 0x32 };
-byte ip[] = { 172, 16, 14, 200 };
+// Enter a MAC address and IP address for your controller below.
+// The IP address will be dependent on your local network:
+byte mac[] = { 0x80, 0xA2, 0xDA, 0x0F, 0x8B, 0x32 };
+IPAddress ip( 172, 16, 14, 200 );
 
-unsigned int localPort = 4000;
+unsigned int localPort = 4000;      // local port to listen on
 
-byte remoteIp[ 4 ];
+// buffers for receiving and sending data
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+char  ReplyBuffer[] = "acknowledged";       // a string to send back
 
-unsigned int remotePort;
-
-char packetBuffer[ UDP_TX_PACKET_MAX_SIZE ];
-char ReplyBuffer[] = "acknowledged";
-
-char cON[] = "on";
-char cOFF[] = "off";
+// An EthernetUDP instance to let us send and receive packets over UDP
+EthernetUDP Udp;
 
 void setup() {
-    Ethernet.begin( mac, ip );
-    Udp.begin( localPort );
-    
-    PinMode( LED, OUTPUT );
-    Serial.begin(9600);
+  
+  // start the Ethernet and UDP:
+  Ethernet.begin(mac,ip);
+  Udp.begin(localPort);
+
+  Serial.begin(9600);
 }
 
 void loop() {
-    int packetSize = Udp.available();
-    if( packetSize ) {
-        packetSize = packetSize - 8;
-        Serial.print( "Received packet of size" )
-        Serial.println( packetSize );
-
-        Udp.readPacket( packetBuffer, UDP_TX_PACKET_MAX_SIZE, remoteIp, remotePort );
-
-        packetBuffer[ packetSize ] = 0;
-
-        if( strcmp( packetBuffer, cON ) == 0 ) {
-            digitalWrite( LED, HIGH );
-        }
-        if( strcmp( packetBuffer, cOFF ) == 0 ) {
-            digitalWrite( LED, LOW );
-        }
-        Serial.print( "Contents:" );
-        Serial.println( packetBuffer );
-
-        Udp.sendPacket( ReplyBuffer, remoteIp, remotePort );
+  // if there's data available, read a packet
+  int packetSize = Udp.parsePacket();
+  if(packetSize)
+  {
+    //Serial.print("Received packet of size ");
+    
+    //Serial.println(packetSize);
+    //Serial.print("From ");
+    
+    IPAddress remote = Udp.remoteIP();
+    for (int i =0; i < 4; i++)
+    {
+      Serial.print(remote[i], DEC);
+      if (i < 3)
+      {
+        Serial.print(".");
+      }
     }
-    delay(10);
+    //Serial.print(", port ");
+    //Serial.println(Udp.remotePort());
+    
+    Serial.print( '\t' );
+    
+    
+    
+
+    // read the packet into packetBufffer
+    Udp.read(packetBuffer,UDP_TX_PACKET_MAX_SIZE);
+    //Serial.println("Contents:");
+    Serial.println(packetBuffer);
+
+    // send a reply, to the IP address and port that sent us the packet we received
+    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    Udp.write(ReplyBuffer);
+    Udp.endPacket();
+  }
+  delay(10);
 }
