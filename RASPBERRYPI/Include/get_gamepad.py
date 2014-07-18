@@ -9,7 +9,7 @@ import pygame
 import decimal
 from pygame.locals import *
 
-class LogicoolGamepad:
+class LogicoolGamepad():
 
     def __init__(self):
         pygame.joystick.init()
@@ -85,6 +85,12 @@ class LogicoolGamepad:
         print(self.Hat_X)
         print(self.Hat_Y)
         print("\n")
+
+class LogicoolGamepad_int( LogicoolGamepad ):
+    def rounds( self, raw_Axiss ):
+        self.__handred_Axis = raw_Axiss * 10
+        self.__round_Axiss = int(round( self.__handred_Axis ))
+        return self.__round_Axiss
 
 class GamepadError(Exception):
     def __init__(self, message):

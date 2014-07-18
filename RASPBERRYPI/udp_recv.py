@@ -2,7 +2,8 @@
 
 import socket
 
-host = '127.0.0.1'
+#host = '127.0.0.1'
+host = '172.16.14.182'
 port = 4000
 clientsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 clientsock.bind((host, port))
