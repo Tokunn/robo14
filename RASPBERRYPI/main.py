@@ -17,7 +17,7 @@ import record_string
 
 
 def main():
-    ip_add = '172.16.14.227'
+    ip_add = '172.16.14.200'
     port = 4000
 
     F710 = get_gamepad.LogicoolGamepad_int()
