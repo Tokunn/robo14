@@ -29,13 +29,13 @@ void get_command( int *command ) {
     }
 }
 
-void convert_command( char packetBuffer, int command ) {
-    VALUE_ID = 0;
-    VALUE_LEFT = 2;
-    VALUE_RIGT = 4;
-    COM_ID = 0;
-    COM_LEFT = 1;
-    COM_RIGT = 2;
+void convert_command( char *packetBuffer, int *command ) {
+    int VALUE_ID = 0;
+    int VALUE_LEFT = 2;
+    int VALUE_RIGT = 4;
+    int COM_ID = 0;
+    int COM_LEFT = 1;
+    int COM_RIGT = 2;
 
     switch( packetBuffer[ VALUE_ID ] ) {
         case '$':
