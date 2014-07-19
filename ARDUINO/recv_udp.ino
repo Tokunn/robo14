@@ -75,5 +75,10 @@ void setup() {
 void loop() {
     int command[] = { tire, 0, 0 };
     get_command( command );
-    Serial.println( "\t\t%d\t%d\t%d", command[ 0 ], command[ 1 ], command[ 2 ] );
+
+    Serial.print( "\t\t\t" );
+    Serial.print( command[ 0 ] );
+    Serial.print( command[ 1 ] );
+    Serial.print( command[ 2 ] );
+    Serial.print( "\n" );
 }
