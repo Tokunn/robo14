@@ -11,7 +11,7 @@
 
     EthernetUDP Udp;
 
-void UDP_setup();
+void UDP_setup() {
     Ethernet.begin( mac, ip );
     Udp.begin( localPort );
 }
