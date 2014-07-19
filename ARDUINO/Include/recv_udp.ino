@@ -2,31 +2,43 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-byte mac[] = { 0x80, 0xA2, 0xDA, 0x0F, 0x88, 0x32 };
-IPAddress ip( 172, 16, 14, 200 );
 
-unsigned int localPort = 4000;
+class RecvUDP {
+    public:
+        void set_addr( byte *mac_addr, int *ip_addr );
+        void set_port( int loclaport );
+        void start();
+        void get( char *command );
 
-char packetBuffer[ UDP_TX_PACKET_MAX_SIZE ];
-char ReplyBuffer[] = "acknowledged";
+    private:
+        byte *__mac[ 10 ];
+        int *__ip[ 5 ];
+        int __port;
+        char __packetBuffer[ UDP_TX_PACKET_MAX_SIZE ];
+        int __packetSize;
+        EthernetUDP __Udp;
+};
 
-EthernetUDP Udp;
-
-void setup() {
-    Ethernet.begin( mac, ip );
-    Udp.begin( localPort );
-    Serial.begin( 9600 );
+void RecvUDP::set_addr( byte *mac_addr, int *ip_addr ) {
+    __mac = mac_addr;
+    __ip = ip_addr;
 }
 
-void loop() {
-    int packetSize = Udp.parsePacket();
-    if( packetSize ) {
-        Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
-        Serial.println( packetBuffer );
+void RecvUDP::set_port( int localport ) {
+    __port = localport;
+}
 
-        Udp.beginPacket( Udp.remoteIP(), Udp.remotePort() );
-        Udp.write( ReplyBuffer );
-        Udp.endPacket();
+void RecvUDP::start() {
+    IPAddress ip( __ip* );
+    Ethernet.begin( __mac*, ip );
+    Udp.begin( __port );
+}
+
+void RecvUDP::get( char *command ) {
+    if( Udp.parsePacket() ) {
+        Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
+        for (int i = 0; i < sizeof( packetBuffer ); i++ ) {
+            command[ i ] = packetBuffer[ i ];
+        }
     }
-    delay( 10 );
 }
