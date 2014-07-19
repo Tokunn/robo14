@@ -76,7 +76,6 @@ void loop() {
     int command[] = { tire, 0, 0 };
     get_command( command );
 
-    Serial.print( "\t\t\t" );
     Serial.print( command[ 0 ] );
     Serial.print( command[ 1 ] );
     Serial.print( command[ 2 ] );
