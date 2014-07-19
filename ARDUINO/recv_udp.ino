@@ -45,6 +45,13 @@ void convert_command( char *packetBuffer, int *command ) {
         case '&':
             command[ COM_ID ] = updown;  break;
     }
+
+    char temp_left[ 2 ];
+    char temp_rigt[ 2 ];
+    temp_left[ 0 ] = packetBuffer[ VALUE_LEFT ];
+    temp_rigt[ 0 ] = packetBuffer[ VALUE_RIGT ];
+    temp_left[ 1 ] = temp_rigt[ 1 ] = '\0';
+
     command[ COM_LEFT ] = atoi( packetBuffer[ VALUE_LEFT ] );
     command[ COM_RIGT ] = atoi( packetBuffer[ VALUE_RIGT ] );
 
