@@ -13,12 +13,15 @@ class RecvUDP {
         int __packetSize;
         EthernetUDP __Udp;
 
-        int __port = 4000;
+        int __port;
         IPAddress ip( 172, 16, 14, 200 );
         byte __mac[] = { 0x80, 0xA2, 0xDA, 0x0F, 0x88, 0x32 };
 };
 
 void RecvUDP::start() {
+    __port = 4000;
+    byte __mac[] = { 0x80, 0xA2, 0xDa, 0x0F, 0x88, 0x32 };
+    
     Ethernet.begin( __mac, ip );
     Udp.begin( __port );
 }
