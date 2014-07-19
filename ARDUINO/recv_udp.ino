@@ -29,6 +29,8 @@ void setup() {
 }
 
 void loop() {
-    int command[] = "$S0S0";
-    get_command( int command );
+    int tire = 0, cata = 1, updown = 2;
+
+    int command[] = { tire, 0, 0 };
+    get_command( command );
 }
