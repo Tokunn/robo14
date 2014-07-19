@@ -52,8 +52,8 @@ void convert_command( char *packetBuffer, int *command ) {
     temp_rigt[ 0 ] = packetBuffer[ VALUE_RIGT ];
     temp_left[ 1 ] = temp_rigt[ 1 ] = '\0';
 
-    command[ COM_LEFT ] = atoi( packetBuffer[ VALUE_LEFT ] );
-    command[ COM_RIGT ] = atoi( packetBuffer[ VALUE_RIGT ] );
+    command[ COM_LEFT ] = atoi( temp_left );
+    command[ COM_RIGT ] = atoi( temp_rigt );
 
     if( packetBuffer[ VALUE_LEFT - 1 ] == 'B' ) {
         command[ COM_LEFT ] *= -1;
