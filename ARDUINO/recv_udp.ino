@@ -2,7 +2,6 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-void UDP_setup();
     byte mac[] = { 0x80, 0xA2, 0xDA, 0x0F, 0x88, 0x32 };
     IPAddress ip( 172, 16, 14, 200 );
 
@@ -12,6 +11,7 @@ void UDP_setup();
 
     EthernetUDP Udp;
 
+void UDP_setup();
     Ethernet.begin( mac, ip );
     Udp.begin( localPort );
 }
@@ -21,4 +21,14 @@ void get_command( int *command ) {
         Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
         Serial.println( packetBuffer );
     }
+}
+
+void setup() {
+    UDP_setup();
+    Serial.begin(9600);
+}
+
+void loop() {
+    int command[] = "$S0S0";
+    get_command( int command );
 }
