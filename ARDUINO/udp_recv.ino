@@ -18,8 +18,7 @@ void setup() {
 }
 
 void loop() {
-    int packetSize = Udp.parsePacket();
-    if( packetSize ) {
+    if( Udp.parsePacket() ) {
         Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
         Serial.println( packetBuffer );
     }
