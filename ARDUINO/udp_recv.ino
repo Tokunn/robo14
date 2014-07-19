@@ -8,7 +8,6 @@ IPAddress ip( 172, 16, 14, 200 );
 unsigned int localPort = 4000;
 
 char packetBuffer[ UDP_TX_PACKET_MAX_SIZE ];
-char ReplyBuffer[] = "acknowledged";
 
 EthernetUDP Udp;
 
@@ -23,10 +22,5 @@ void loop() {
     if( packetSize ) {
         Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
         Serial.println( packetBuffer );
-
-        Udp.beginPacket( Udp.remoteIP(), Udp.remotePort() );
-        Udp.write( ReplyBuffer );
-        Udp.endPacket();
     }
-    delay( 10 );
 }
