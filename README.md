@@ -26,9 +26,9 @@ NITOyC 2014 RoboconProject
 使い方
 ------
 PythonとPygameが入っているPCで実行してください。  
-robo14/demae.pyとrobo14/uketori.pyがメインプログラムです。  
-robo14/get_gamepad.pyはゲームパッドの値を読み込んで扱いやすい形に変換するためのクラスです。  
-ゲームパッドとArduinoを接続してrobo14/demae.pyまたはrobo14/uketori.pyを実行してください。  
+robo14/RASPBERRYPI/main.pyがメインプログラムです。  
+robo14/RASPBERRYPI/Include/get_gamepad.pyはゲームパッドの値を読み込んで扱いやすい形に変換するためのクラスです。  
+ゲームパッドとArduinoを接続してメインプログラムを実行してください。    
 
 編集方法
 --------
