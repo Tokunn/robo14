@@ -25,7 +25,7 @@ void get_command( int *command ) {
     if( Udp.parsePacket() ) {
         Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
         convert_command( packetBuffer, command );
-        Serial.println( packetBuffer );
+        //Serial.println( packetBuffer );
     }
 }
 
@@ -66,7 +66,7 @@ void convert_command( char *packetBuffer, int *command ) {
 /******************Netword Functions End***********/
 
 
-
+/*
 void setup() {
     UDP_setup();
     Serial.begin(9600);
@@ -81,3 +81,4 @@ void loop() {
     Serial.print( command[ 2 ] );
     Serial.print( "\n" );
 }
+*/
