@@ -25,17 +25,20 @@ void get_command( int *command ) {
     if( Udp.parsePacket() ) {
         Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
         convert_command( packetBuffer, command );
-        //Serial.println( packetBuffer );
     }
 }
 
 void convert_command( char *packetBuffer, int *command ) {
     int VALUE_ID = 0;
-    int VALUE_LEFT = 2;
-    int VALUE_RIGT = 4;
+    int VALUE_LEFT_FRON = 2;
+    int VALUE_LEFT_REAR = 4;
+    int VALUE_RIGT_FRON = 6;
+    int VALUE_RIGT_REAR = 8;
     int COM_ID = 0;
-    int COM_LEFT = 1;
-    int COM_RIGT = 2;
+    int COM_LEFT_FRON = 1;
+    int COM_LEFT_REAR = 2;
+    int COM_RIGT_FRON = 3;
+    int COM_RIGT_REAR = 4;
 
     switch( packetBuffer[ VALUE_ID ] ) {
         case '$':
@@ -46,21 +49,34 @@ void convert_command( char *packetBuffer, int *command ) {
             command[ COM_ID ] = updown;  break;
     }
 
-    char temp_left[ 2 ];
-    char temp_rigt[ 2 ];
-    temp_left[ 0 ] = packetBuffer[ VALUE_LEFT ];
-    temp_rigt[ 0 ] = packetBuffer[ VALUE_RIGT ];
-    temp_left[ 1 ] = temp_rigt[ 1 ] = '\0';
+    char temp_left_fron[ 2 ];
+    char temp_left_rear[ 2 ];
+    char temp_rigt_fron[ 2 ];
+    char temp_rigt_rear[ 2 ];
+    temp_left_fron[ 0 ] = packetBuffer[ VALUE_LEFT_FRON ];
+    temp_left_rear[ 0 ] = packetBuffer[ VALUE_LEFT_REAR ];
+    temp_rigt_fron[ 0 ] = packetBuffer[ VALUE_RIGT_FRON ];
+    temp_rigt_raar[ 0 ] = packetBuffer[ VALUE_RIGT_REAR ];
+    temp_left_fron[ 1 ] = temp_left_rear[ 1 ] = temp_rigt_fron[ 1 ] = temp_rigt_rear[ 1 ] = '\0';
 
-    command[ COM_LEFT ] = atoi( temp_left );
-    command[ COM_RIGT ] = atoi( temp_rigt );
+    command[ COM_LEFT_FRON ] = atoi( temp_left_fron );
+    command[ COM_LEFT_REAR ] = atoi( temp_left_rear );
+    command[ COM_RIGT_FRON ] = atoi( temp_rigt_fron );
+    command[ COM_RIGT_REAR ] = atoi( temp_rigt_rear );
 
-    if( packetBuffer[ VALUE_LEFT - 1 ] == 'B' ) {
-        command[ COM_LEFT ] *= -1;
+    if( packetBuffer[ VALUE_LEFT_FRON - 1 ] == 'B' ) {
+        command[ COM_LEFT_FRON ] *= -1;
     }
-    if( packetBuffer[ VALUE_RIGT - 1 ] == 'B' ) {
-        command[ COM_RIGT ] *= -1;
+    if( packetBuffer[ VALUE_LEFT_REAR - 1 ] == 'B' ) {
+        command[ COM_LEFT_REAR ] *= -1;
     }
+    if( packetBuffer[ VALUE_RIGT_FRON - 1 ] == 'B' ) {
+        command[ COM_RIGT_FRON ] *= -1;
+    }
+    if( packetBuffer[ VALUE_RIGT_REAR - 1 ] == 'B' ) {
+        command[ COM_RIGT_REAR ] *= -1;
+    }
+
 }
 
 /******************Netword Functions End***********/
