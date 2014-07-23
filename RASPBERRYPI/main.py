@@ -32,7 +32,7 @@ def main():
 
         UDP.send( Command.get() )
 
-        time.sleep( 0.05 )
+        time.sleep( 0.03 )
 
 if __name__ == '__main__':
     try:

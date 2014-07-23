@@ -56,7 +56,7 @@ void convert_command( char *packetBuffer, int *command ) {
     temp_left_fron[ 0 ] = packetBuffer[ VALUE_LEFT_FRON ];
     temp_left_rear[ 0 ] = packetBuffer[ VALUE_LEFT_REAR ];
     temp_rigt_fron[ 0 ] = packetBuffer[ VALUE_RIGT_FRON ];
-    temp_rigt_raar[ 0 ] = packetBuffer[ VALUE_RIGT_REAR ];
+    temp_rigt_rear[ 0 ] = packetBuffer[ VALUE_RIGT_REAR ];
     temp_left_fron[ 1 ] = temp_left_rear[ 1 ] = temp_rigt_fron[ 1 ] = temp_rigt_rear[ 1 ] = '\0';
 
     command[ COM_LEFT_FRON ] = atoi( temp_left_fron );
