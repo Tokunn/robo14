@@ -1,10 +1,29 @@
 ###     DEMAEROBOT PROGRAM
 ###     2014 OyNCT Robocon Aterm Tsushin
 ###     Designed On 2014.Jul.18 By Tokunn
-###     Update On 2014.Jul.15 By Tokunn make
+###     Update On 2014.Aug.18 By Tokunn add MakeCommand_button
 
 import time
 import math
+
+
+class MakeCommand_button():
+    def __init__( self, com_id ):
+        self.__command = [ com_id, '0', '0' ]
+        self.VALUE_BUTTON_A = 1
+        self.VALUE_BUTTON_B = 2
+
+    def set( self, button_id, value ):
+        self.__command[ button_id ] = value
+
+    def get( self ):
+        self.__convertToString()
+        return self.__joined_command
+
+    def __convertToString( self ):
+        self.__command[ self.VALUE_BUTTON_A ] = str( self.__command[ self.VALUE_BUTTON_A ] )
+        self.__command[ self.VALUE_BUTTON_B ] = str( self.__command[ self.VALUE_BUTTON_B ] )
+        self.__joined_command = ''.join(self.__command)
 
 
 class MakeCommand():
@@ -76,12 +95,17 @@ class MakeCommand():
 def main():
     F710 = get_gamepad.LogicoolGamepad_int()
     Command = MakeCommand( '$' )
+    Command_button = MakeCommand_button( '&' )
 
     while True:
         F710.update()
         Command.set( Command.VALUE_SPEED, F710.left_Axis_Y )
         Command.set( Command.VALUE_STEERING, F710.left_Axis_X )
         print( '\t'*4 + Command.get() )
+
+        Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
+        Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
+        print( '\t'*6 + Command_button.get() )
         time.sleep( 0.01 )
 
 if __name__ == '__main__':
