@@ -84,6 +84,8 @@ void convert_command( char *packetBuffer, int *command ) {
         }
     }
     else if ( command[ COM_ID ] == updown ) {
+        char temp_button_a[ 2 ];
+        char temp_button_b[ 2 ];
         temp_button_a[ 0 ] = packetBuffer[ VALUE_BUTTON_A ];
         temp_button_b[ 0 ] = packetBuffer[ VALUE_BUTTON_B ];
         temp_button_a[ 1 ] = temp_button_b[ 1 ] = '\0';
