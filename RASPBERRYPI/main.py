@@ -22,7 +22,7 @@ def main():
 
     F710 = get_gamepad.LogicoolGamepad_int()
     Command_tire = make_command.MakeCommand( '$' )
-    Command_button = make_command.MakeCommand_button( '&' )
+    #Command_button = make_command.MakeCommand_button( '&' )
     UDP = send_udp_command.Send_UDP( ip_add, port )
 
     while True:
@@ -31,11 +31,11 @@ def main():
         Command_tire.set( Command_tire.VALUE_SPEED, F710.left_Axis_Y )          # Set Tire Value
         Command_tire.set( Command_tire.VALUE_STEERING, F710.left_Axis_X )
 
-        Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
-        Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
+        #Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
+        #Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
 
         UDP.send( Command_tire.get() )
-        UDP.send( Command_button.get() )
+        #UDP.send( Command_button.get() )
 
         time.sleep( 0.03 )
 
