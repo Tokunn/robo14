@@ -8,6 +8,7 @@ import math
 
 
 class MakeCommand_button():
+
     def __init__( self, com_id ):
         self.__command = [ com_id, '0', '0' ]
         self.VALUE_BUTTON_A = 1
@@ -28,7 +29,8 @@ class MakeCommand_button():
 
 class MakeCommand():
     def __init__( self, com_id ):
-        self.__command = [ com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
+        self.__com_id = com_id
+        self.__command = [ self.__com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
         self.__speedsValues = [ 0, 0 ]
         self.__VALUE_MAX = 9
         self.__VALUE_LEFT_FRONT = 2
@@ -42,114 +44,104 @@ class MakeCommand():
         self.__speedsValues[ speed_id ] = speed
 
     def get( self ):
-        self.__makeAngle()
-        self.__makeVariable()
-        self.__setVariable()
+        if ( self.__speedsValues[ self.VALUE_SPEED ] or self.__speedsValues[ self.VALUE_STEERING ] ):
+            self.__makeAngle()
+            self.__makeVariable()
+            self.__setVariable()
+        else:
+            self.__noAction()
         self.__setSpeedLevel()
+        self.__setString()
+        self.__fixOverflow()
         self.__convertToString()
         return self.__joined_command
 
+    def __clear( self ):
+        self.__command = [ self.__com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
+        self.__speedsValues = [ 0, 0 ]
+
     def __makeAngle( self ):
-        self.__angle = math.atan2( self.__speedsValues[ self.VALUE_SPEED ], self.__speedsValues[ self.VALUE_STEERING ] )
-        self.__angle = ( self.__angle * 180 ) / ( math.atan2(1, 1) * 4 )     # Convert Rad to Deg
+        self.__rawAngle = math.atan2( self.__speedsValues[ self.VALUE_SPEED ], self.__speedsValues[ self.VALUE_STEERING ] )
+        self.__angle = self.__rawAngle = ( self.__rawAngle * 180 ) / ( math.atan2(1, 1) * 4 )     # Convert Rad to Deg
+        print( self.__angle )
         if ( self.__angle > 90 ) and ( self.__angle < 180 ):    # 2
             self.__angle = 180 - self.__angle
         elif ( self.__angle < 0 ) and ( self.__angle > -90 ):
             self.__angle = 90 + self.__angle
-        elif ( self.__angle > -90 ) and ( self.__angle < -180 ):
+        elif ( self.__angle < -90 ) and ( self.__angle > -180 ):
             self.__angle = -90 - self.__angle
+            print( "3daoxoxoxoxo" )
 
     def __makeVariable( self ):
-        self.__variable = -1 + self.__angle * ( 1 / 45 )
+        self.__variable = -1 + self.__angle / 45 
 
     def __setVariable( self ):
-        if ( self.__angle > 0 ) and ( self.__angle < 90 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-
+        if ( self.__rawAngle > 0 ) and ( self.__rawAngle < 90 ):
             self.__command[ self.__VALUE_LEFT_FRONT ] = 1
             self.__command[ self.__VALUE_LEFT_REAR ] = self.__variable
             self.__command[ self.__VALUE_RIGT_FRONT ] = self.__variable
             self.__command[ self.__VALUE_RIGT_REAR ] = 1
 
-        elif ( self.__angle > 90 ) and ( self.__angle < 180 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-
+        elif ( self.__rawAngle > 90 ) and ( self.__rawAngle < 180 ):
             self.__command[ self.__VALUE_LEFT_FRONT ] = self.__variable
             self.__command[ self.__VALUE_LEFT_REAR ] = 1
             self.__command[ self.__VALUE_RIGT_FRONT ] = 1
             self.__command[ self.__VALUE_RIGT_REAR ] = self.__variable
 
-        elif ( self.__angle > -90 ) and ( self.__angle < 0 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
-
+        elif ( self.__rawAngle < 0 ) and ( self.__rawAngle > -90 ):
             self.__command[ self.__VALUE_LEFT_FRONT ] = self.__variable
-            self.__command[ self.__VALUE_LEFT_REAR ] = 1
-            self.__command[ self.__VALUE_RIGT_FRONT ] = 1
+            self.__command[ self.__VALUE_LEFT_REAR ] = -1
+            self.__command[ self.__VALUE_RIGT_FRONT ] = -1
             self.__command[ self.__VALUE_RIGT_REAR ] = self.__variable
 
-        elif ( self.__angle > -180 ) and ( self.__angle < -90 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
-
-            self.__command[ self.__VALUE_LEFT_FRONT ] = 1
+        elif ( self.__rawAngle > -180 ) and ( self.__rawAngle < -90 ):
+            self.__command[ self.__VALUE_LEFT_FRONT ] = -1
             self.__command[ self.__VALUE_LEFT_REAR ] = self.__variable
             self.__command[ self.__VALUE_RIGT_FRONT ] = self.__variable
+            self.__command[ self.__VALUE_RIGT_REAR ] = -1
+
+        elif ( self.__rawAngle == 0 ):
+            self.__command[ self.__VALUE_LEFT_FRONT ] = 1
+            self.__command[ self.__VALUE_LEFT_REAR ] = -1
+            self.__command[ self.__VALUE_RIGT_FRONT ] = -1
             self.__command[ self.__VALUE_RIGT_REAR ] = 1
 
-        elif ( self.__angle == 0 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-
+        elif ( self.__rawAngle == 90 ):
             self.__command[ self.__VALUE_LEFT_FRONT ] = 1
             self.__command[ self.__VALUE_LEFT_REAR ] = 1
             self.__command[ self.__VALUE_RIGT_FRONT ] = 1
             self.__command[ self.__VALUE_RIGT_REAR ] = 1
 
-        elif ( self.__angle == 90 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-
-            self.__command[ self.__VALUE_LEFT_FRONT ] = 1
+        elif ( self.__rawAngle == 180 ):
+            self.__command[ self.__VALUE_LEFT_FRONT ] = -1
             self.__command[ self.__VALUE_LEFT_REAR ] = 1
             self.__command[ self.__VALUE_RIGT_FRONT ] = 1
-            self.__command[ self.__VALUE_RIGT_REAR ] = 1
+            self.__command[ self.__VALUE_RIGT_REAR ] = -1
 
-        elif ( self.__angle == 180 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'S'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
+        elif ( self.__rawAngle == -90 ):
+            self.__command[ self.__VALUE_LEFT_FRONT ] = -1
+            self.__command[ self.__VALUE_LEFT_REAR ] = -1
+            self.__command[ self.__VALUE_RIGT_FRONT ] = -1
+            self.__command[ self.__VALUE_RIGT_REAR ] = -1
 
-            self.__command[ self.__VALUE_LEFT_FRONT ] = 1
-            self.__command[ self.__VALUE_LEFT_REAR ] = 1
-            self.__command[ self.__VALUE_RIGT_FRONT ] = 1
-            self.__command[ self.__VALUE_RIGT_REAR ] = 1
+        self.__command[ self.__VALUE_LEFT_FRONT ] =   self.__command[ self.__VALUE_LEFT_FRONT ] 
+        self.__command[ self.__VALUE_LEFT_REAR ] =    self.__command[ self.__VALUE_LEFT_REAR ] 
+        self.__command[ self.__VALUE_RIGT_FRONT ] =   self.__command[ self.__VALUE_RIGT_FRONT ] 
+        self.__command[ self.__VALUE_RIGT_REAR ] =    self.__command[ self.__VALUE_RIGT_REAR ] 
+        print( self.__angle )
 
-        elif ( self.__angle == 180 ):
-            self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
-            self.__command[ self.__VALUE_RIGT_FRONT -1 ] = 'B'
-            self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'B'
+        print( str( self.__command[ self.__VALUE_LEFT_FRONT ] ) + "\t" +  str( self.__command[ self.__VALUE_LEFT_REAR ] ) + "\t" +  str( self.__command[ self.__VALUE_RIGT_FRONT ] ) + "\t" + str( self.__command[ self.__VALUE_RIGT_REAR ] ) )
 
-            self.__command[ self.__VALUE_LEFT_FRONT ] = 1
-            self.__command[ self.__VALUE_LEFT_REAR ] = 1
-            self.__command[ self.__VALUE_RIGT_FRONT ] = 1
-            self.__command[ self.__VALUE_RIGT_REAR ] = 1
+    def __noAction( self ):
+        self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'S'
+        self.__command[ self.__VALUE_LEFT_REAR -1 ] = 'S'
+        self.__command[ self.__VALUE_RIGT_FRONT - 1 ] = 'S'
+        self.__command[ self.__VALUE_RIGT_REAR - 1 ] = 'S'
+
+        self.__command[ self.__VALUE_LEFT_FRONT ] = 0
+        self.__command[ self.__VALUE_LEFT_REAR ] = 0
+        self.__command[ self.__VALUE_RIGT_FRONT ] = 0
+        self.__command[ self.__VALUE_RIGT_REAR ] = 0
 
     def __setSpeedLevel( self ):
         self.__lenght = math.sqrt( ( self.__speedsValues[ self.VALUE_SPEED ] * self.__speedsValues[ self.VALUE_SPEED ] ) + ( self.__speedsValues[ self.VALUE_STEERING ] * self.__speedsValues[ self.VALUE_STEERING ] ) )
@@ -160,33 +152,26 @@ class MakeCommand():
         self.__command[ self.__VALUE_RIGT_FRONT ] *= self.__lenght
         self.__command[ self.__VALUE_RIGT_REAR ] *= self.__lenght
 
-    def __fixOverflow( self ):
-        if ( self.__command[ self.__VALUE_LEFT ] > self.__VALUE_MAX ):
-            self.__command[ self.__VALUE_RIGT ] -= self.__command[ self.__VALUE_LEFT ] - self.__VALUE_MAX
-        elif ( self.__command[ self.__VALUE_LEFT ] < -self.__VALUE_MAX ):
-            self.__command[ self.__VALUE_RIGT ] -= self.__command[ self.__VALUE_LEFT ] + self.__VALUE_MAX
-
-        if ( self.__command[ self.__VALUE_RIGT ] > self.__VALUE_MAX ):
-            self.__command[ self.__VALUE_LEFT ] -= self.__command[ self.__VALUE_RIGT ] - self.__VALUE_MAX
-        elif ( self.__command[ self.__VALUE_RIGT ] < -self.__VALUE_MAX ):
-            self.__command[ self.__VALUE_LEFT ] -= self.__command[ self.__VALUE_RIGT ] + self.__VALUE_MAX
-
-        for i in [ self.__VALUE_LEFT, self.__VALUE_RIGT ]:
+    def __setString( self ):
+        for i in range( 2, 9, 2 ):
             if ( self.__command[ i ] > 0 ):
-                self.__command[ i - 1 ] = 'F'
+                self.__command[ i -1 ] = 'F'
             elif ( self.__command[ i ] < 0 ):
                 self.__command[ i - 1 ] = 'B'
             else:
                 self.__command[ i - 1 ] = 'S'
 
-            self.__command[ i ] = math.fabs( self.__command[ i ] )
-            if ( self.__command[ i ] > self.__VALUE_MAX ):
-                self.__command[ i ] = self.__VALUE_MAX
+            self.__command[ i ] = abs( self.__command[ i ] )
+
+    def __fixOverflow( self ):
+        if ( self.__speedsValues[ self.VALUE_SPEED ] or self.__speedsValues[ self.VALUE_STEERING ] ):
+            for i in range( 2, 9, 2 ):
+                self.__command[ i ] = self.__command[ i ] * 9 / 13
 
     def __convertToString( self ):
         self.__command[ self.__VALUE_LEFT_FRONT ] = str( int( self.__command[ self.__VALUE_LEFT_FRONT ] ) )
-        self.__command[ self.__VALUE_RIGT_FRONT ] = str( int( self.__command[ self.__VALUE_RIGT_FRONT ] ) )
         self.__command[ self.__VALUE_LEFT_REAR ] = str( int( self.__command[ self.__VALUE_LEFT_REAR ] ) )
+        self.__command[ self.__VALUE_RIGT_FRONT ] = str( int( self.__command[ self.__VALUE_RIGT_FRONT ] ) )
         self.__command[ self.__VALUE_RIGT_REAR ] = str( int( self.__command[ self.__VALUE_RIGT_REAR ] ) )
         self.__joined_command = ''.join(self.__command)
 
