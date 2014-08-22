@@ -5,8 +5,8 @@
 
 extern int tire, cata, updown;
 
-int VAL_LEFT = 0, VAL_RIGT = 1;
-int CMD_LEFT = 1, CMD_RIGT = 2;
+int VAL_LEFT_FRONT = 0, VAL_LEFT_REAR = 1, VAL_RIGT_FRONT = 2, VAL_RIGT_REAR = 3;
+int CMD_LEFT_FRONT = 1, CMD_LEFT_REAR = 2, CMD_RIGT_FRONT = 3, CMD_RIGT_REAR = 4;
 
 int m_pin_lf[] = { 2, 3 };
 int m_pin_ll[] = { 4, 5 };
@@ -22,77 +22,107 @@ void setup()
 
 void make_pwm( int* p_gamepad, int* pwm_val )
 {
-    pwm_val[ VAL_LEFT ] = 255 - ( abs( p_gamepad[ CMD_LEFT ] ) * 25 );
-    pwm_val[ VAL_RIGT ] = 255 - ( abs( p_gamepad[ CMD_RIGT ] ) * 25 );
+    pwm_val[ VAL_LEFT_FRONT ] = 255 - ( abs( p_gamepad[ CMD_LEFT_FRONT ] ) * 25 );
+    pwm_val[ VAL_LEFT_REAR ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR ] ) * 25 );
+    pwm_val[ VAL_RIGT_FRONT ] = 255 - ( abs( p_gamepad[ CMD_RIGT_FRONT ] ) * 25 );
+    pwm_val[ VAL_RIGT_REAR ] = 255 - ( abs( p_gamepad[ CMD_RIGT_REAR ] ) * 25 );
 }
 
 
 void check_rotate( int* p_gamepad, boolean* rotate )
 {
-    if ( p_gamepad[ CMD_LEFT ] >= 0 ) {
-        rotate[ VAL_LEFT ] = true;
+    if ( p_gamepad[ CMD_LEFT_FRONT ] >= 0 ) {   // LF
+        rotate[ VAL_LEFT_FRONT ] = true;
     }
     else {
-        rotate[ VAL_LEFT ] = false;
+        rotate[ VAL_LEFT_FRONT ] = false;
     }
-
-    if ( p_gamepad[ CMD_RIGT ] >= 0 ) {
-        rotate[ VAL_RIGT ] = true;
+    if ( p_gamepad[ CMD_LEFT_REAR ] >= 0 ) {    // LR
+        rotate[ VAL_LEFT_REAR ] = true;
     }
     else {
-        rotate[ VAL_RIGT ] = false;
+        rotate[ VAL_LEFT_REAR ] = false;
+    }
+    if ( p_gamepad[ CMD_RIGT_FRONT ] >= 0 ) {   // RF
+        rotate[ VAL_RIGT_FRONT ] = true;
+    }
+    else {
+        rotate[ VAL_RIGT_FRONT ] = false;
+    }
+    if ( p_gamepad[ CMD_RIGT_REAR ] >= 0 ) {   // RR
+        rotate[ VAL_RIGT_REAR ] = true;
+    }
+    else {
+        rotate[ VAL_RIGT_REAR ] = false;
     }
 }
 
 
 void drive_demae( int* pwm_val, boolean* rotate )
 {
-    if ( rotate[ VAL_LEFT ] ) {
-        analogWrite( m_pin_lf[0], pwm_val[ VAL_LEFT ] );
+    if ( rotate[ VAL_LEFT_FRONT ] ) {       // LF
+        analogWrite( m_pin_lf[0], pwm_val[ VAL_LEFT_FRONT ] );
         analogWrite( m_pin_lf[1], 255 );
 
-        analogWrite( m_pin_ll[0], pwm_val[ VAL_LEFT ] );
+        analogWrite( m_pin_ll[0], pwm_val[ VAL_LEFT_FRONT ] );
         analogWrite( m_pin_ll[1], 255 );
     }
-    else if ( !rotate[ VAL_LEFT ] ) {
+    else if ( !rotate[ VAL_LEFT_FRONT ] ) {
         analogWrite( m_pin_lf[0], 255 );
-        analogWrite( m_pin_lf[1], pwm_val[ VAL_LEFT ] );
+        analogWrite( m_pin_lf[1], pwm_val[ VAL_LEFT_FRONT ] );
 
         analogWrite( m_pin_ll[0], 255 );
-        analogWrite( m_pin_ll[1], pwm_val[ VAL_LEFT ] );
+        analogWrite( m_pin_ll[1], pwm_val[ VAL_LEFT_FRONT ] );
     }
-    if ( rotate[ VAL_RIGT ] ) {
-        analogWrite( m_pin_rf[0], pwm_val[ VAL_RIGT ] );
+    if ( rotate[ VAL_LEFT_REAR ] ) {        // LR
+        analogWrite( m_pin_lf[0], pwm_val[ VAL_LEFT_REAR ] );
+        analogWrite( m_pin_lf[1], 255 );
+
+        analogWrite( m_pin_ll[0], pwm_val[ VAL_LEFT_REAR ] );
+        analogWrite( m_pin_ll[1], 255 );
+    }
+    else if ( !rotate[ VAL_LEFT_FRONT ] ) {
+        analogWrite( m_pin_lf[0], 255 );
+        analogWrite( m_pin_lf[1], pwm_val[ VAL_LEFT_REAR ] );
+
+        analogWrite( m_pin_ll[0], 255 );
+        analogWrite( m_pin_ll[1], pwm_val[ VAL_LEFT_REAR ] );
+    }
+    if ( rotate[ VAL_RIGT_FRONT ] ) {       // RF
+        analogWrite( m_pin_rf[0], pwm_val[ VAL_RIGT_FRONT ] );
         analogWrite( m_pin_rf[1], 255 );
 
-        analogWrite( m_pin_rl[0], pwm_val[ VAL_RIGT ] );
+        analogWrite( m_pin_rl[0], pwm_val[ VAL_RIGT_FRONT ] );
         analogWrite( m_pin_rl[1], 255 );
     }
-    else if ( !rotate[ VAL_RIGT ] ) {
+    else if ( !rotate[ VAL_RIGT_FRONT ] ) {
         analogWrite( m_pin_rf[0], 255 );
-        analogWrite( m_pin_rf[1], pwm_val[ VAL_RIGT ] );
+        analogWrite( m_pin_rf[1], pwm_val[ VAL_RIGT_FRONT ] );
 
         analogWrite( m_pin_rl[0], 255 );
-        analogWrite( m_pin_rl[1], pwm_val[ VAL_RIGT ] );
+        analogWrite( m_pin_rl[1], pwm_val[ VAL_RIGT_FRONT ] );
+    }
+    if ( rotate[ VAL_RIGT_REAR ] ) {       // RR
+        analogWrite( m_pin_rf[0], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( m_pin_rf[1], 255 );
+
+        analogWrite( m_pin_rl[0], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( m_pin_rl[1], 255 );
+    }
+    else if ( !rotate[ VAL_RIGT_REAR ] ) {
+        analogWrite( m_pin_rf[0], 255 );
+        analogWrite( m_pin_rf[1], pwm_val[ VAL_RIGT_REAR ] );
+
+        analogWrite( m_pin_rl[0], 255 );
+        analogWrite( m_pin_rl[1], pwm_val[ VAL_RIGT_REAR ] );
     }
 }
-
-
-void debug_print( int* pwm_val, boolean* rotate )
-{
-    Serial.print( pwm_val[0] );
-
-    Serial.print( pwm_val[1] );
-
-    Serial.println( "" );
-}
-
 
 void loop()
 {
-    int p_gamepad[] = { tire, 0, 0 };
-    int pwm_val[] = { 0, 0 };
-    boolean rotate[] = { true, true };
+    int p_gamepad[] = { tire, 0, 0, 0, 0 };
+    int pwm_val[] = { 0, 0, 0, 0 };
+    boolean rotate[] = { true, true, true, true };
 
     get_command( p_gamepad );
 
@@ -100,7 +130,6 @@ void loop()
     check_rotate( p_gamepad, rotate );
 
     drive_demae( pwm_val, rotate );
-    //debug_print( pwm_val );
 
     delay( 30 );
 }
