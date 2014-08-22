@@ -55,9 +55,21 @@ class MakeCommandTurn():
             self.__command[ i ] *= abs( self.__speedsValues )
             self.__command[ i ] *= 0.9
 
+        self.__setString()
         self.__convertToString()
 
         return self.__joined_command
+
+    def __setString( self ):
+        for i in range( 2, 9, 2 ):
+            if ( self.__command[ i ] > 0 ):
+                self.__command[ i -1 ] = 'F'
+            elif ( self.__command[ i ] < 0 ):
+                self.__command[ i - 1 ] = 'B'
+            else:
+                self.__command[ i - 1 ] = 'S'
+
+            self.__command[ i ] = abs( self.__command[ i ] )
 
     def __convertToString( self ):
         self.__command[ self.__VALUE_LEFT_FRONT ] = str( int( self.__command[ self.__VALUE_LEFT_FRONT ] ) )
