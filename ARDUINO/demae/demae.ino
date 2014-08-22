@@ -9,9 +9,9 @@ int VAL_LEFT_FRONT = 0, VAL_LEFT_REAR = 1, VAL_RIGT_FRONT = 2, VAL_RIGT_REAR = 3
 int CMD_LEFT_FRONT = 1, CMD_LEFT_REAR = 2, CMD_RIGT_FRONT = 3, CMD_RIGT_REAR = 4;
 
 int m_pin_lf[] = { 2, 3 };
-int m_pin_ll[] = { 4, 5 };
+int m_pin_lr[] = { 4, 5 };
 int m_pin_rf[] = { 6, 7 };
-int m_pin_rl[] = { 8, 9 };
+int m_pin_rr[] = { 8, 9 };
 
 void setup()
 {
@@ -63,58 +63,37 @@ void drive_demae( int* pwm_val, boolean* rotate )
     if ( rotate[ VAL_LEFT_FRONT ] ) {       // LF
         analogWrite( m_pin_lf[0], pwm_val[ VAL_LEFT_FRONT ] );
         analogWrite( m_pin_lf[1], 255 );
-
-        analogWrite( m_pin_ll[0], pwm_val[ VAL_LEFT_FRONT ] );
-        analogWrite( m_pin_ll[1], 255 );
     }
     else if ( !rotate[ VAL_LEFT_FRONT ] ) {
         analogWrite( m_pin_lf[0], 255 );
         analogWrite( m_pin_lf[1], pwm_val[ VAL_LEFT_FRONT ] );
-
-        analogWrite( m_pin_ll[0], 255 );
-        analogWrite( m_pin_ll[1], pwm_val[ VAL_LEFT_FRONT ] );
     }
+
     if ( rotate[ VAL_LEFT_REAR ] ) {        // LR
-        analogWrite( m_pin_lf[0], pwm_val[ VAL_LEFT_REAR ] );
-        analogWrite( m_pin_lf[1], 255 );
-
-        analogWrite( m_pin_ll[0], pwm_val[ VAL_LEFT_REAR ] );
-        analogWrite( m_pin_ll[1], 255 );
+        analogWrite( m_pin_lr[0], pwm_val[ VAL_LEFT_REAR ] );
+        analogWrite( m_pin_lr[1], 255 );
     }
-    else if ( !rotate[ VAL_LEFT_FRONT ] ) {
-        analogWrite( m_pin_lf[0], 255 );
-        analogWrite( m_pin_lf[1], pwm_val[ VAL_LEFT_REAR ] );
-
-        analogWrite( m_pin_ll[0], 255 );
-        analogWrite( m_pin_ll[1], pwm_val[ VAL_LEFT_REAR ] );
+    else if ( !rotate[ VAL_LEFT_REAR ] ) {
+        analogWrite( m_pin_lr[0], 255 );
+        analogWrite( m_pin_lr[1], pwm_val[ VAL_LEFT_REAR ] );
     }
+
     if ( rotate[ VAL_RIGT_FRONT ] ) {       // RF
         analogWrite( m_pin_rf[0], pwm_val[ VAL_RIGT_FRONT ] );
         analogWrite( m_pin_rf[1], 255 );
-
-        analogWrite( m_pin_rl[0], pwm_val[ VAL_RIGT_FRONT ] );
-        analogWrite( m_pin_rl[1], 255 );
     }
     else if ( !rotate[ VAL_RIGT_FRONT ] ) {
         analogWrite( m_pin_rf[0], 255 );
         analogWrite( m_pin_rf[1], pwm_val[ VAL_RIGT_FRONT ] );
-
-        analogWrite( m_pin_rl[0], 255 );
-        analogWrite( m_pin_rl[1], pwm_val[ VAL_RIGT_FRONT ] );
     }
-    if ( rotate[ VAL_RIGT_REAR ] ) {       // RR
-        analogWrite( m_pin_rf[0], pwm_val[ VAL_RIGT_REAR ] );
-        analogWrite( m_pin_rf[1], 255 );
 
-        analogWrite( m_pin_rl[0], pwm_val[ VAL_RIGT_REAR ] );
-        analogWrite( m_pin_rl[1], 255 );
+    if ( rotate[ VAL_RIGT_REAR ] ) {       // RR
+        analogWrite( m_pin_rr[0], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( m_pin_rr[1], 255 );
     }
     else if ( !rotate[ VAL_RIGT_REAR ] ) {
-        analogWrite( m_pin_rf[0], 255 );
-        analogWrite( m_pin_rf[1], pwm_val[ VAL_RIGT_REAR ] );
-
-        analogWrite( m_pin_rl[0], 255 );
-        analogWrite( m_pin_rl[1], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( m_pin_rr[0], 255 );
+        analogWrite( m_pin_rr[1], pwm_val[ VAL_RIGT_REAR ] );
     }
 }
 
