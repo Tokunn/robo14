@@ -27,6 +27,46 @@ class MakeCommand_button():
         self.__joined_command = ''.join(self.__command)
 
 
+class MakeCommandTurn():
+    def __init__( self, com_id ):
+        self.__command = [ com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
+        self.__speedsValues = 0
+        self.__VALUE_LEFT_FRONT = 2
+        self.__VALUE_LEFT_REAR = 4
+        self.__VALUE_RIGT_FRONT = 6
+        self.__VALUE_RIGT_REAR = 8
+
+    def set( self, value ):
+        self.__speedsValues = value
+
+    def get( self ):
+        if ( self.__speedsValues > 0 ):
+            self.__command[ self.__VALUE_LEFT_FRONT ] = 1
+            self.__command[ self.__VALUE_LEFT_REAR ] = 1
+            self.__command[ self.__VALUE_RIGT_FRONT ] = -1
+            self.__command[ self.__VALUE_RIGT_REAR ] = -1
+        else:
+            self.__command[ self.__VALUE_LEFT_FRONT ] = -1
+            self.__command[ self.__VALUE_LEFT_REAR ] = -1
+            self.__command[ self.__VALUE_RIGT_FRONT ] = 1
+            self.__command[ self.__VALUE_RIGT_REAR ] = 1
+
+        for i in range( 2, 9, 2 ):
+            self.__command[ i ] *= abs( self.__speedsValues )
+            self.__command[ i ] *= 0.9
+
+        self.__convertToString()
+
+        return self.__joined_command
+
+    def __convertToString( self ):
+        self.__command[ self.__VALUE_LEFT_FRONT ] = str( int( self.__command[ self.__VALUE_LEFT_FRONT ] ) )
+        self.__command[ self.__VALUE_LEFT_REAR ] = str( int( self.__command[ self.__VALUE_LEFT_REAR ] ) )
+        self.__command[ self.__VALUE_RIGT_FRONT ] = str( int( self.__command[ self.__VALUE_RIGT_FRONT ] ) )
+        self.__command[ self.__VALUE_RIGT_REAR ] = str( int( self.__command[ self.__VALUE_RIGT_REAR ] ) )
+        self.__joined_command = ''.join(self.__command)
+
+
 class MakeCommand():
     def __init__( self, com_id ):
         self.__com_id = com_id
@@ -165,8 +205,12 @@ class MakeCommand():
 
     def __fixOverflow( self ):
         if ( self.__speedsValues[ self.VALUE_SPEED ] or self.__speedsValues[ self.VALUE_STEERING ] ):
-            for i in range( 2, 9, 2 ):
-                self.__command[ i ] = self.__command[ i ] * 9 / 13
+            if ( self.__rawAngle != 0 and self.__rawAngle != 90 and self.__rawAngle != 180 and self.__rawAngle != -90 ):
+                for i in range( 2, 9, 2 ):
+                    self.__command[ i ] = self.__command[ i ] * 9 / 13
+            else:
+                for i in range( 2, 9, 2 ):
+                    self.__command[ i ] *= 0.9
 
     def __convertToString( self ):
         self.__command[ self.__VALUE_LEFT_FRONT ] = str( int( self.__command[ self.__VALUE_LEFT_FRONT ] ) )

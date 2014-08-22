@@ -21,16 +21,20 @@ def main():
     port = 4000
 
     F710 = get_gamepad.LogicoolGamepad_int()
-    Command_tire = make_command_uketori.MakeCommand( '$' )
+    Command_movement = make_command_uketori.MakeCommand( '$' )
+    Command_turn = make_command_uketori.MakeCommandTurn( '$' )
     UDP = send_udp_command.Send_UDP( ip_add, port )
 
     while True:
         F710.update()
 
-        Command_tire.set( Command_tire.VALUE_SPEED, F710.left_Axis_Y )          # Set Tire Value
-        Command_tire.set( Command_tire.VALUE_STEERING, F710.left_Axis_X )
-
-        UDP.send( Command_tire.get() )
+        if ( F710.rigt_Axis_X == 0 ):
+            Command_movement.set( Command_movement.VALUE_SPEED, F710.left_Axis_Y )          # Set Tire Value
+            Command_movement.set( Command_movement.VALUE_STEERING, F710.left_Axis_X )
+            UDP.send( Command_movement.get() )
+        else:
+            Command_turn.set( F710.rigt_Axis_X )
+            UDP.send( Command_turn.get() )
 
         time.sleep( 0.03 )
 
