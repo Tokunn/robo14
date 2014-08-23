@@ -23,7 +23,7 @@ def main():
     F710 = get_gamepad.LogicoolGamepad_int()
     Command_movement = make_command_uketori.MakeCommand( '$' )
     Command_turn = make_command_uketori.MakeCommandTurn( '$' )
-    Command_button = make_command.MakeCommand_button( '&' )
+    Command_button = make_command_uketori.MakeCommand_button( '&' )
     UDP = send_udp_command.Send_UDP( ip_add, port )
 
     while True:
@@ -37,9 +37,11 @@ def main():
             Command_turn.set( F710.rigt_Axis_X )
             UDP.send( Command_turn.get() )
 
-        Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
-        Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
-        UDP.send( Command_button.get() )
+        if ( F710.Button_A or F710.Button_B or F710.Hat_Y ):
+            Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
+            Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
+            Command_button.set( Command_button.VALUE_HAT, F710.Hat_Y )
+            UDP.send( Command_button.get() )
 
         time.sleep( 0.03 )
 

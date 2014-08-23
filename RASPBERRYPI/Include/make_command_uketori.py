@@ -10,26 +10,33 @@ import math
 class MakeCommand_button():
 
     def __init__( self, com_id ):
-        self.__command = [ com_id, '0', '0' ]
+        self.__command = [ com_id, '0', '0', '0' ]      # [ com_id, A, B, HAT ]
         self.VALUE_BUTTON_A = 1
         self.VALUE_BUTTON_B = 2
+        self.VALUE_HAT = 3
 
     def set( self, button_id, value ):
         self.__command[ button_id ] = value
 
     def get( self ):
+        self.__convertHatValue()
         self.__convertToString()
         return self.__joined_command
+
+    def __convertHatValue( self ):
+        if ( self.__command[ self.VALUE_HAT ] == -1 ):
+            self.__command[ self.VALUE_HAT ] = 2
 
     def __convertToString( self ):
         self.__command[ self.VALUE_BUTTON_A ] = str( self.__command[ self.VALUE_BUTTON_A ] )
         self.__command[ self.VALUE_BUTTON_B ] = str( self.__command[ self.VALUE_BUTTON_B ] )
+        self.__command[ self.VALUE_HAT ] = str( self.__command[ self.VALUE_HAT ] )
         self.__joined_command = ''.join(self.__command)
 
 
 class MakeCommandTurn():
     def __init__( self, com_id ):
-        self.__command = [ com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
+        self.__command = [ com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]     # [ com_id, LF, LR, RF, RR ]
         self.__speedsValues = 0
         self.__VALUE_LEFT_FRONT = 2
         self.__VALUE_LEFT_REAR = 4
@@ -115,14 +122,13 @@ class MakeCommand():
     def __makeAngle( self ):
         self.__rawAngle = math.atan2( self.__speedsValues[ self.VALUE_SPEED ], self.__speedsValues[ self.VALUE_STEERING ] )
         self.__angle = self.__rawAngle = ( self.__rawAngle * 180 ) / ( math.atan2(1, 1) * 4 )     # Convert Rad to Deg
-        print( self.__angle )
+        #print( self.__angle )
         if ( self.__angle > 90 ) and ( self.__angle < 180 ):    # 2
             self.__angle = 180 - self.__angle
         elif ( self.__angle < 0 ) and ( self.__angle > -90 ):
             self.__angle = 90 + self.__angle
         elif ( self.__angle < -90 ) and ( self.__angle > -180 ):
             self.__angle = -90 - self.__angle
-            print( "3daoxoxoxoxo" )
 
     def __makeVariable( self ):
         self.__variable = -1 + self.__angle / 45 
@@ -180,9 +186,9 @@ class MakeCommand():
         self.__command[ self.__VALUE_LEFT_REAR ] =    self.__command[ self.__VALUE_LEFT_REAR ] 
         self.__command[ self.__VALUE_RIGT_FRONT ] =   self.__command[ self.__VALUE_RIGT_FRONT ] 
         self.__command[ self.__VALUE_RIGT_REAR ] =    self.__command[ self.__VALUE_RIGT_REAR ] 
-        print( self.__angle )
+        #print( self.__angle )
 
-        print( str( self.__command[ self.__VALUE_LEFT_FRONT ] ) + "\t" +  str( self.__command[ self.__VALUE_LEFT_REAR ] ) + "\t" +  str( self.__command[ self.__VALUE_RIGT_FRONT ] ) + "\t" + str( self.__command[ self.__VALUE_RIGT_REAR ] ) )
+        #print( str( self.__command[ self.__VALUE_LEFT_FRONT ] ) + "\t" +  str( self.__command[ self.__VALUE_LEFT_REAR ] ) + "\t" +  str( self.__command[ self.__VALUE_RIGT_FRONT ] ) + "\t" + str( self.__command[ self.__VALUE_RIGT_REAR ] ) )
 
     def __noAction( self ):
         self.__command[ self.__VALUE_LEFT_FRONT - 1 ] = 'S'
