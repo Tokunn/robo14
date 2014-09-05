@@ -56,5 +56,6 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print("\nexit")
             sys.exit(0)
-        except socket.error:
+        except send_udp_command.socket.error:
             print("socket.error")
+            time.sleep(2)
