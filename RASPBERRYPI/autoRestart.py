@@ -14,4 +14,6 @@ if __name__ == '__main__':
         try:
             subprocess.call( './main.py' )
         except:
+            print("missing start python script")
             pass
+        time.sleep(5)
