@@ -47,9 +47,14 @@ def main():
         time.sleep( 0.03 )
 
 if __name__ == '__main__':
-    try:
-        main()
-    except get_gamepad.GamepadError:
-        print("\nGamepadDevice not found !!")
-    except KeyboardInterrupt:
-        print("\nexit")
+    while True:
+        try:
+            main()
+        except get_gamepad.GamepadError:
+            print("\nGamepadDevice not found !!")
+            sys.exit(0)
+        except KeyboardInterrupt:
+            print("\nexit")
+            sys.exit(0)
+        except socket.error:
+            print("socket.error")
