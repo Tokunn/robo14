@@ -120,12 +120,12 @@ void drive_cata( int* pwm_val, boolean* rotate )
     }
 
     if ( rotate[ VAL_RIGT_REAR ] ) {
-        analogWrite( c_pin_l[0], pwm_val[ VAL_RIGT_REAR ] );
-        analogWrite( c_pin_l[1], 255 );
+        analogWrite( c_pin_r[0], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( c_pin_r[1], 255 );
     }
     else if ( !rotate[ VAL_RIGT_REAR ] ) {
-        analogWrite( c_pin_l[1], 255 );
-        analogWrite( c_pin_l[0], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( c_pin_r[1], 255 );
+        analogWrite( c_pin_r[0], pwm_val[ VAL_RIGT_REAR ] );
     }
 }
 
