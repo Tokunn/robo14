@@ -8,10 +8,13 @@ extern int tire, cata, updown;
 int VAL_LEFT_FRONT = 0, VAL_LEFT_REAR = 1, VAL_RIGT_FRONT = 2, VAL_RIGT_REAR = 3;
 int CMD_LEFT_FRONT = 1, CMD_LEFT_REAR = 2, CMD_RIGT_FRONT = 3, CMD_RIGT_REAR = 4;
 
-int m_pin_lf[] = { 2, 3 };
-int m_pin_lr[] = { 4, 5 };
-int m_pin_rf[] = { 6, 7 };
-int m_pin_rr[] = { 8, 9 };
+int m_pin_lf[] = { 0, 1 };
+int m_pin_lr[] = { 2, 3 };
+int m_pin_rf[] = { 4, 5 };
+int m_pin_rr[] = { 6, 7 };
+
+int c_pin_l[] = { 8, 9 };
+int c_pin_r[] = {12, 13};
 
 void setup()
 {
@@ -25,6 +28,11 @@ void make_pwm( int* p_gamepad, int* pwm_val )
     pwm_val[ VAL_LEFT_FRONT ] = 255 - ( abs( p_gamepad[ CMD_LEFT_FRONT ] ) * 25 );
     pwm_val[ VAL_LEFT_REAR ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR ] ) * 25 );
     pwm_val[ VAL_RIGT_FRONT ] = 255 - ( abs( p_gamepad[ CMD_RIGT_FRONT ] ) * 25 );
+    pwm_val[ VAL_RIGT_REAR ] = 255 - ( abs( p_gamepad[ CMD_RIGT_REAR ] ) * 25 );
+}
+void make_pwm_cata( int* p_gamepad, int* pwm_val )
+{
+    pwm_val[ VAL_LEFT_REAR ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR ] ) * 25 );
     pwm_val[ VAL_RIGT_REAR ] = 255 - ( abs( p_gamepad[ CMD_RIGT_REAR ] ) * 25 );
 }
 
@@ -58,7 +66,7 @@ void check_rotate( int* p_gamepad, boolean* rotate )
 }
 
 
-void drive_demae( int* pwm_val, boolean* rotate )
+void drive_tire( int* pwm_val, boolean* rotate )
 {
     if ( rotate[ VAL_LEFT_FRONT ] ) {       // LF
         analogWrite( m_pin_lf[0], pwm_val[ VAL_LEFT_FRONT ] );
@@ -97,18 +105,49 @@ void drive_demae( int* pwm_val, boolean* rotate )
     }
 }
 
+
+void drive_cata( int* pwm_val, boolean* rotate )
+{
+    if ( rotate[ VAL_LEFT_REAR ] ) {
+        analogWrite( c_pin_l[0], pwm_val[ VAL_LEFT_REAR ] );
+        analogWrite( c_pin_l[1], 255 );
+    }
+    else if ( !rotate[ VAL_LEFT_REAR ] ) {
+        analogWrite( c_pin_l[1], 255 );
+        analogWrite( c_pin_l[0], pwm_val[ VAL_LEFT_REAR ] );
+    }
+
+    if ( rotate[ VAL_RIGT_REAR ] ) {
+        analogWrite( c_pin_l[0], pwm_val[ VAL_RIGT_REAR ] );
+        analogWrite( c_pin_l[1], 255 );
+    }
+    else if ( !rotate[ VAL_RIGT_REAR ] ) {
+        analogWrite( c_pin_l[1], 255 );
+        analogWrite( c_pin_l[0], pwm_val[ VAL_RIGT_REAR ] );
+    }
+
+
 void loop()
 {
-    int p_gamepad[] = { tire, 0, 0, 0, 0 };
+    int p_gamepad[] = { 0, 0, 0, 0, 0 };
     int pwm_val[] = { 0, 0, 0, 0 };
     boolean rotate[] = { true, true, true, true };
 
     get_command( p_gamepad );
 
-    make_pwm( p_gamepad, pwm_val );
-    check_rotate( p_gamepad, rotate );
+    if (p_gamepad[0] == tire ) {
+        make_pwm( p_gamepad, pwm_val );
+        check_rotate( p_gamepad, rotate );
 
-    drive_demae( pwm_val, rotate );
+        drive_tire( pwm_val, rotate );
+    }
+
+    else if (p_gamepad[0] == cata ) {
+        make_pwm_cata( p_gamepad, pwm_val );
+        check_rotate( p_gamepad, rotate );
+
+        drive_cata( pwm_val, rotate );
+    }
 
     delay( 30 );
 }
