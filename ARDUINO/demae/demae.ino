@@ -26,10 +26,12 @@ void setup()
 void make_pwm( int* p_gamepad, int* pwm_val )
 {
     pwm_val[ VAL_LEFT_FRONT ] = 255 - ( abs( p_gamepad[ CMD_LEFT_FRONT ] ) * 25 );
-    pwm_val[ VAL_LEFT_REAR ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR ] ) * 25 );
+    pwm_val[ VAL_LEFT_REAR  ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR  ] ) * 25 );
     pwm_val[ VAL_RIGT_FRONT ] = 255 - ( abs( p_gamepad[ CMD_RIGT_FRONT ] ) * 25 );
-    pwm_val[ VAL_RIGT_REAR ] = 255 - ( abs( p_gamepad[ CMD_RIGT_REAR ] ) * 25 );
+    pwm_val[ VAL_RIGT_REAR  ] = 255 - ( abs( p_gamepad[ CMD_RIGT_REAR  ] ) * 25 );
 }
+
+
 void make_pwm_cata( int* p_gamepad, int* pwm_val )
 {
     pwm_val[ VAL_LEFT_REAR ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR ] ) * 25 );
