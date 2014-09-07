@@ -132,9 +132,9 @@ void drive_cata( int* pwm_val, boolean* rotate )
 
 void loop()
 {
-    int p_gamepad[] = { tire, 0, 0, 0, 0 };
-    int p_gamepad_t[] = { tire, 0, 0, 0, 0 };
-    int p_gamepad_c[] = { cata, 0, 0, 0, 0 };
+    static int p_gamepad[] = { tire, 0, 0, 0, 0 };
+    static int p_gamepad_t[] = { tire, 0, 0, 0, 0 };
+    static int p_gamepad_c[] = { cata, 0, 0, 0, 0 };
     int pwm_val[] = { 0, 0, 0, 0 };
     boolean rotate[] = { true, true, true, true };
 
