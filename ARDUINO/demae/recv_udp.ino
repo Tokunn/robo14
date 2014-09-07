@@ -13,6 +13,8 @@ unsigned int localPort = 4000;
 char packetBuffer[ UDP_TX_PACKET_MAX_SIZE ];
 EthernetUDP Udp;
 
+int miss_catch_udp = 0;
+
 /*****************Netword Settings End************/
 /*****************Network Functions***************/
 
@@ -21,10 +23,16 @@ void UDP_setup() {
     Udp.begin( localPort );
 }
 
-void get_command( int *command ) {
+int get_command( int *command ) {
     if( Udp.parsePacket() ) {
         Udp.read( packetBuffer, UDP_TX_PACKET_MAX_SIZE );
         convert_command( packetBuffer, command );
+        miss_catch_udp = 0;
+        return 0;
+    }
+    else {
+        miss_catch_udp++;
+        return miss_catch_udp;
     }
 }
 

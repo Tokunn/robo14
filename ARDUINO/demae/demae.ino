@@ -138,7 +138,13 @@ void loop()
     int pwm_val[] = { 0, 0, 0, 0 };
     boolean rotate[] = { true, true, true, true };
 
-    get_command( p_gamepad );
+    int miss_catch_udp_count = get_command( p_gamepad );    // Get command and miss_catch_udp_count
+
+    if (miss_catch_udp_count > 3) {
+        for (int i = 0; i < sizeof(p_gamepad); i++ ) {
+            p_gamepad[i] = p_gamepad_t[i];
+        }
+    }
 
     if (p_gamepad[0] == tire ) {
         make_pwm( p_gamepad, pwm_val );
