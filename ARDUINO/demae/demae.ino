@@ -140,7 +140,7 @@ void loop()
 
     int miss_catch_udp_count = get_command( p_gamepad );    // Get command and miss_catch_udp_count
 
-    if (miss_catch_udp_count > 3) {
+    if (miss_catch_udp_count > 5) {
         for (int i = 0; i < sizeof(p_gamepad); i++ ) {
             p_gamepad[i] = p_gamepad_t[i];
         }
