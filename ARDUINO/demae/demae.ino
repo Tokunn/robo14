@@ -32,13 +32,6 @@ void make_pwm( int* p_gamepad, int* pwm_val )
 }
 
 
-void make_pwm_cata( int* p_gamepad, int* pwm_val )
-{
-    pwm_val[ VAL_LEFT_REAR ] = 255 - ( abs( p_gamepad[ CMD_LEFT_REAR ] ) * 25 );
-    pwm_val[ VAL_RIGT_REAR ] = 255 - ( abs( p_gamepad[ CMD_RIGT_REAR ] ) * 25 );
-}
-
-
 void check_rotate( int* p_gamepad, boolean* rotate )
 {
     if ( p_gamepad[ CMD_LEFT_FRONT ] >= 0 ) {   // LF
@@ -151,17 +144,17 @@ void loop()
         check_rotate( p_gamepad, rotate );
         drive_tire( pwm_val, rotate );
 
-        make_pwm_cata( p_gamepad_c, pwm_val );
+        make_pwm( p_gamepad_c, pwm_val );
         check_rotate( p_gamepad_c, rotate );
         drive_cata( pwm_val, rotate );
     }
     else if (p_gamepad[0] == cata ) {
-        make_pwm_cata( p_gamepad, pwm_val );
+        make_pwm( p_gamepad, pwm_val );
         check_rotate( p_gamepad, rotate );
         drive_cata( pwm_val, rotate );
 
-        make_pwm( p_gamepad_t, pwm_val );
-        check_rotate( p_gamepad_t, rotate );
+        // make_pwm( p_gamepad_t, pwm_val );
+        // check_rotate( p_gamepad_t, rotate );
         drive_tire( pwm_val, rotate );
     }
 
