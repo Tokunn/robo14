@@ -50,7 +50,7 @@ class MakeCommand():
 
     def __convertAngleToRote( self ):
         self.__speedsValues[ self.VALUE_SPEED ] =  int( round( self.__speedsValues[ self.VALUE_SPEED ] * 0.9 ) )
-        self.__speedsValues[ self.VALUE_STEERING ] =  int( round( self.__speedsValues[ self.VALUE_STEERING ] * 0.3 ) )
+        self.__speedsValues[ self.VALUE_STEERING ] =  int( round( self.__speedsValues[ self.VALUE_STEERING ] * 0.9 ) )
 
         self.__command[ self.__VALUE_LEFT ] =  self.__speedsValues[ self.VALUE_SPEED ] + self.__speedsValues[ self.VALUE_STEERING ]
         self.__command[ self.__VALUE_RIGT ] =  self.__speedsValues[ self.VALUE_SPEED ] - self.__speedsValues[ self.VALUE_STEERING ]
