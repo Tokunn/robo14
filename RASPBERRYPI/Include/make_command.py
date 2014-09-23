@@ -29,7 +29,7 @@ class MakeCommand_button():
 class MakeCommand():
     def __init__( self, com_id ):
         self.__command = [ com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
-        self.__speedsValues = [ 0, 0 ]
+        self.__speedsValues = [ 0, 0, 0 ]   # set F710.* ( Speed, Steering, Bdash )
         self.__VALUE_MAX = 9
         self.__VALUE_LEFT = 2
         self.__VALUE_LEFT_REAR = 4
@@ -37,6 +37,7 @@ class MakeCommand():
         self.__VALUE_RIGT_REAR = 8
         self.VALUE_SPEED = 0
         self.VALUE_STEERING = 1
+        self.VALUE_BDASH = 2
 
     def set( self, speed_id, speed ):
         self.__speedsValues[ speed_id ] = speed
@@ -49,8 +50,14 @@ class MakeCommand():
         return self.__joined_command
 
     def __convertAngleToRote( self ):
-        self.__speedsValues[ self.VALUE_SPEED ] =  int( round( self.__speedsValues[ self.VALUE_SPEED ] * 0.9 ) )
-        self.__speedsValues[ self.VALUE_STEERING ] =  int( round( self.__speedsValues[ self.VALUE_STEERING ] * 0.9 ) )
+        # Bdash check
+        if (self.__speedsValues[ self.VALUE_BDASH ]):   # In B Dash Mode
+            bdash_lenght = 0.9
+        else:   # Not In B Dash Mode
+            bdash_lenght = 0.4
+
+        self.__speedsValues[ self.VALUE_SPEED ] =  int( round( self.__speedsValues[ self.VALUE_SPEED ] * bdash_lenght ) )
+        self.__speedsValues[ self.VALUE_STEERING ] =  int( round( self.__speedsValues[ self.VALUE_STEERING ] * bdash_lenght) )
 
         self.__command[ self.__VALUE_LEFT ] =  self.__speedsValues[ self.VALUE_SPEED ] + self.__speedsValues[ self.VALUE_STEERING ]
         self.__command[ self.__VALUE_RIGT ] =  self.__speedsValues[ self.VALUE_SPEED ] - self.__speedsValues[ self.VALUE_STEERING ]

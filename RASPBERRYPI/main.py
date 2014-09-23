@@ -29,22 +29,23 @@ def main():
     while True:
         F710.update()
 
-        if ( F710.rigt_Axis_Y == 0 and F710.rigt_Axis_X == 0 ):
+        if ( F710.rigt_Axis_Y == 0 and F710.rigt_Axis_X == 0 ):     # Doesn't use cata
             Command_tire.set( Command_tire.VALUE_SPEED, F710.left_Axis_Y )          # Set Tire Value
             Command_tire.set( Command_tire.VALUE_STEERING, F710.left_Axis_X )
-
+            Command_tire.set( Command_tire.VALUE_BDASH, F710.Button_B )      # B Dash
             UDP.send( Command_tire.get() )
-        else:
+        else:   # Use cata
             Command_cata.set( Command_cata.VALUE_SPEED, F710.rigt_Axis_Y )
             Command_cata.set( Command_cata.VALUE_STEERING, F710.rigt_Axis_X )
+            Command_cata.set( Command_cata.VALUE_BDASH, F710.left_Bumper )
             UDP.send( Command_cata.get() )
 
-        if ( F710.Button_A or F710.Button_B ):
-            Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
-            Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
-            UDP.send( Command_button.get() )
+        #if ( F710.Button_A or F710.Button_B ):
+            #Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
+            #Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
+            #UDP.send( Command_button.get() )
 
-        time.sleep( 0.03 )
+        time.sleep( 0.04 )
 
 if __name__ == '__main__':
     while True:

@@ -90,7 +90,7 @@ class MakeCommand():
     def __init__( self, com_id ):
         self.__com_id = com_id
         self.__command = [ self.__com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
-        self.__speedsValues = [ 0, 0 ]
+        self.__speedsValues = [ 0, 0, 0 ]
         self.__VALUE_MAX = 9
         self.__VALUE_LEFT_FRONT = 2
         self.__VALUE_LEFT_REAR = 4
@@ -98,6 +98,7 @@ class MakeCommand():
         self.__VALUE_RIGT_REAR = 8
         self.VALUE_SPEED = 0
         self.VALUE_STEERING = 1
+        self.VALUE_BDASH = 2
 
     def set( self, speed_id, speed ):
         self.__speedsValues[ speed_id ] = speed
@@ -117,7 +118,7 @@ class MakeCommand():
 
     def __clear( self ):
         self.__command = [ self.__com_id, 'S', 0, 'S', 0, 'S', 0, 'S', 0 ]
-        self.__speedsValues = [ 0, 0 ]
+        self.__speedsValues = [ 0, 0, 0 ]
 
     def __makeAngle( self ):
         self.__rawAngle = math.atan2( self.__speedsValues[ self.VALUE_SPEED ], self.__speedsValues[ self.VALUE_STEERING ] )
@@ -225,10 +226,10 @@ class MakeCommand():
         if ( self.__speedsValues[ self.VALUE_SPEED ] or self.__speedsValues[ self.VALUE_STEERING ] ):
             if ( self.__rawAngle != 0 and self.__rawAngle != 90 and self.__rawAngle != 180 and self.__rawAngle != -90 ):
                 for i in range( 2, 9, 2 ):
-                    self.__command[ i ] = self.__command[ i ] * 9 / 13
+                    self.__command[ i ] = self.__command[ i ] * 4 / 13
             else:
                 for i in range( 2, 9, 2 ):
-                    self.__command[ i ] *= 0.9
+                    self.__command[ i ] *= 0.4
 
     def __convertToString( self ):
         self.__command[ self.__VALUE_LEFT_FRONT ] = str( int( self.__command[ self.__VALUE_LEFT_FRONT ] ) )

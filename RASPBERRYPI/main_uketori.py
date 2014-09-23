@@ -29,21 +29,20 @@ def main():
     while True:
         F710.update()
 
-        if ( F710.rigt_Axis_X == 0 ):
+        if ( F710.rigt_Axis_X == 0 ):   # Doesn't use round
             Command_movement.set( Command_movement.VALUE_SPEED, F710.left_Axis_Y )          # Set Tire Value
             Command_movement.set( Command_movement.VALUE_STEERING, F710.left_Axis_X )
             UDP.send( Command_movement.get() )
-        else:
+        else:   # use round
             Command_turn.set( F710.rigt_Axis_X )
             UDP.send( Command_turn.get() )
 
-        if ( F710.Button_A or F710.Button_B or F710.Hat_Y ):
-            Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
-            Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
-            Command_button.set( Command_button.VALUE_HAT, F710.Hat_Y )
-            UDP.send( Command_button.get() )
+        Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
+        Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
+        Command_button.set( Command_button.VALUE_HAT, F710.Hat_Y )
+        UDP.send( Command_button.get() )
 
-        time.sleep( 0.03 )
+        time.sleep( 0.06 )
 
 if __name__ == '__main__':
     try:
