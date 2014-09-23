@@ -1,0 +1,24 @@
+#include <Servo.h>
+
+Servo myservo;
+int pos;
+int servopin = 9;
+
+
+void setup() {
+    pinMode(servopin, OUTPUT);
+    myservo.attach(servopin);
+    myservo.write(0);
+}
+
+
+void loop() {
+    for(pos = 50; pos <= 140; pos += 1) {
+        myservo.write(pos);
+        delay(5);
+    }
+    for(pos = 140; pos>=50; pos -= 1) {
+        myservo.write(pos);
+        delay(5);
+    }
+}
