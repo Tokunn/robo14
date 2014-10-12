@@ -9,9 +9,11 @@ import math
 
 class MakeCommand_button():
     def __init__( self, com_id ):
-        self.__command = [ com_id, '0', '0' ]
-        self.VALUE_BUTTON_A = 1
-        self.VALUE_BUTTON_B = 2
+        self.__command = [ com_id, '0', '0', '0', '0' ]  #[ com_id, MANUAL, AUTO, FRONT, REAR ]
+        self.VALUE_MODE_MANUAL = 1
+        self.VALUE_MODE_AUTO = 2
+        self.VALUE_FRONT = 3
+        self.VALUE_REAR = 4
 
     def set( self, button_id, value ):
         self.__command[ button_id ] = value
@@ -21,8 +23,10 @@ class MakeCommand_button():
         return self.__joined_command
 
     def __convertToString( self ):
-        self.__command[ self.VALUE_BUTTON_A ] = str( self.__command[ self.VALUE_BUTTON_A ] )
-        self.__command[ self.VALUE_BUTTON_B ] = str( self.__command[ self.VALUE_BUTTON_B ] )
+        self.__command[ self.VALUE_MODE_MANUAL ] = str( self.__command[ self.VALUE_MODE_MANUAL ] )
+        self.__command[ self.VALUE_MODE_AUTO   ] = str( self.__command[ self.VALUE_MODE_AUTO   ] )
+        self.__command[ self.VALUE_FRONT ] = str( self.__command[ self.VALUE_FRONT ] )
+        self.__command[ self.VALUE_REAR ] = str( self.__command[ self.VALUE_REAR ] )
         self.__joined_command = ''.join(self.__command)
 
 
@@ -54,7 +58,7 @@ class MakeCommand():
         if (self.__speedsValues[ self.VALUE_BDASH ]):   # In B Dash Mode
             bdash_lenght = 0.9
         else:   # Not In B Dash Mode
-            bdash_lenght = 0.4
+            bdash_lenght = 0.5
 
         self.__speedsValues[ self.VALUE_SPEED ] =  int( round( self.__speedsValues[ self.VALUE_SPEED ] * bdash_lenght ) )
         self.__speedsValues[ self.VALUE_STEERING ] =  int( round( self.__speedsValues[ self.VALUE_STEERING ] * bdash_lenght) )

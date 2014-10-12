@@ -5,7 +5,7 @@
 
 /*****************Netwok Settings*****************/
 
-int tire = 0, cata = 1, updown = 2;
+int tire = 0, cata = 1, arm = 2;
 byte mac[] = { 0x80, 0xA2, 0xDA, 0x0F, 0x88, 0x32 };
 IPAddress ip( 172, 16, 14, 200 );
 unsigned int localPort = 4000;
@@ -42,19 +42,17 @@ void convert_command( char *packetBuffer, int *command ) {
     int VALUE_LEFT_REAR = 4;
     int VALUE_RIGT_FRON = 6;
     int VALUE_RIGT_REAR = 8;
-    int VALUE_MODE_MANUAL  = 1;
-    int VALUE_MODE_AUTO    = 2;
-    int VALUE_UPDOWN_FRONT = 3;
-    int VALUE_UPDOWN_REAR  = 4;
+    int VALUE_BUTTON_A = 1;
+    int VALUE_BUTTON_B = 2;
+    int VALUE_BUTTON_H = 3;
     int COM_ID = 0;
     int COM_LEFT_FRON = 1;
     int COM_LEFT_REAR = 2;
     int COM_RIGT_FRON = 3;
     int COM_RIGT_REAR = 4;
-    int COM_MODE_MANUAL   = 1;
-    int COM_MODE_AUTO     = 2;
-    int COM_UPDOWN_FRONT  = 3;
-    int COM_UPDOWN_REAR   = 4;
+    int COM_BUTTON_A = 1;
+    int COM_BUTTON_B = 2;
+    int COM_BUTTON_H = 3;
 
     switch( packetBuffer[ VALUE_ID ] ) {
         case '$':
@@ -62,8 +60,7 @@ void convert_command( char *packetBuffer, int *command ) {
         case '%':
             command[ COM_ID ] = cata;    break;
         case '&':
-            
-            command[ COM_ID ] = updown;  break;
+            command[ COM_ID ] = arm;  break;
     }
 
     if ( command[ COM_ID ] == tire || command[ COM_ID ] == cata ) {
@@ -96,21 +93,19 @@ void convert_command( char *packetBuffer, int *command ) {
             command[ COM_RIGT_REAR ] *= -1;
         }
     }
-    else if ( command[ COM_ID ] == updown ) {
-        char temp_mode_manual[ 2 ];
-        char temp_mode_auto[ 2 ];
-        char temp_updown_front[ 2 ];
-        char temp_updown_rear[ 2 ];
-        temp_mode_manual[ 0 ]   = packetBuffer[ VALUE_MODE_MANUAL ];
-        temp_mode_auto[ 0 ]     = packetBuffer[ VALUE_MODE_AUTO   ];
-        temp_updown_front[ 0 ]  = packetBuffer[ VALUE_UPDOWN_FRONT];
-        temp_updown_rear[ 0 ]   = packetBuffer[ VALUE_UPDOWN_REAR ];
-        temp_mode_manual[ 1 ] = temp_mode_auto[ 1 ] = temp_updown_front[ 1 ] = temp_updown_rear[ 1 ] = '\0';
+    else if ( command[ COM_ID ] == arm ) {
+        char temp_button_a[ 2 ];
+        char temp_button_b[ 2 ];
+        char temp_button_h[ 2 ];
+        
+        temp_button_a[ 0 ] = packetBuffer[ VALUE_BUTTON_A ];
+        temp_button_b[ 0 ] = packetBuffer[ VALUE_BUTTON_B ];
+        temp_button_h[ 0 ] = packetBuffer[ VALUE_BUTTON_H ];
+        temp_button_a[ 1 ] = temp_button_b[ 1 ] = temp_button_h[ 1 ] = '\0';
 
-        command[ COM_MODE_MANUAL ] = atoi( temp_mode_manual );
-        command[ COM_MODE_AUTO   ] = atoi( temp_mode_auto   );
-        command[ COM_UPDOWN_FRONT] = atoi( temp_updown_front);
-        command[ COM_UPDOWN_REAR ] = atoi( temp_updown_rear );
+        command[ COM_BUTTON_A ] = atoi( temp_button_a );
+        command[ COM_BUTTON_B ] = atoi( temp_button_b );
+        command[ COM_BUTTON_H ] = atoi( temp_button_h );
     }
 }
 

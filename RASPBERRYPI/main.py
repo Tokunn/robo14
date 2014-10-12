@@ -11,7 +11,7 @@ import sys
 sys.path.append( 'Include' )
 import get_gamepad
 import send_udp_command
-import send_serial_command
+#import send_serial_command
 import make_command
 import record_string
 
@@ -28,24 +28,28 @@ def main():
 
     while True:
         F710.update()
-
-        if ( F710.rigt_Axis_Y == 0 and F710.rigt_Axis_X == 0 ):     # Doesn't use cata
-            Command_tire.set( Command_tire.VALUE_SPEED, F710.left_Axis_Y )          # Set Tire Value
-            Command_tire.set( Command_tire.VALUE_STEERING, F710.left_Axis_X )
-            Command_tire.set( Command_tire.VALUE_BDASH, F710.Button_B )      # B Dash
+        if ( F710.left_Axis_Y == 0 and F710.left_Axis_X == 0 ):     # Doesn't use cata
+            Command_tire.set( Command_tire.VALUE_SPEED, F710.rigt_Axis_Y )          # Set Tire Value
+            Command_tire.set( Command_tire.VALUE_STEERING, F710.rigt_Axis_X )
+            BDash_Hat = F710.Hat_X + F710.Hat_Y
+            Command_tire.set( Command_tire.VALUE_BDASH, BDash_Hat )      # B Dash
             UDP.send( Command_tire.get() )
         else:   # Use cata
-            Command_cata.set( Command_cata.VALUE_SPEED, F710.rigt_Axis_Y )
-            Command_cata.set( Command_cata.VALUE_STEERING, F710.rigt_Axis_X )
-            Command_cata.set( Command_cata.VALUE_BDASH, F710.left_Bumper )
+            Command_cata.set( Command_cata.VALUE_SPEED, F710.left_Axis_Y )
+            Command_cata.set( Command_cata.VALUE_STEERING, F710.left_Axis_X )
+            BDash_Hat = F710.Hat_X + F710.Hat_Y
+            Command_cata.set( Command_cata.VALUE_BDASH, BDash_Hat )
             UDP.send( Command_cata.get() )
 
-        #if ( F710.Button_A or F710.Button_B ):
-            #Command_button.set( Command_button.VALUE_BUTTON_A, F710.Button_A )
-            #Command_button.set( Command_button.VALUE_BUTTON_B, F710.Button_B )
-            #UDP.send( Command_button.get() )
+        Command_button.set( Command_button.VALUE_MODE_MANUAL, F710.Button_Strt )
+        Command_button.set( Command_button.VALUE_MODE_AUTO  , F710.Button_Back )
+        Command_button.set( Command_button.VALUE_FRONT, F710.Button_Y )
+        Command_button.set( Command_button.VALUE_REAR, F710.Button_X )
+	time.sleep( 0.01 )
+        UDP.send( Command_button.get() )
 
-        time.sleep( 0.04 )
+        #time.sleep( 0.04 )
+	time.sleep( 0.06 )
 
 if __name__ == '__main__':
     while True:
