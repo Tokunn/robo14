@@ -226,10 +226,10 @@ class MakeCommand():
         if ( self.__speedsValues[ self.VALUE_SPEED ] or self.__speedsValues[ self.VALUE_STEERING ] ):
             if ( self.__rawAngle != 0 and self.__rawAngle != 90 and self.__rawAngle != 180 and self.__rawAngle != -90 ):
                 for i in range( 2, 9, 2 ):
-                    self.__command[ i ] = self.__command[ i ] * 4 / 13
+                    self.__command[ i ] = self.__command[ i ] * 9 / 13
             else:
                 for i in range( 2, 9, 2 ):
-                    self.__command[ i ] *= 0.4
+                    self.__command[ i ] *= 0.9
 
     def __convertToString( self ):
         self.__command[ self.__VALUE_LEFT_FRONT ] = str( int( self.__command[ self.__VALUE_LEFT_FRONT ] ) )

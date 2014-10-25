@@ -58,7 +58,7 @@ class MakeCommand():
         if (self.__speedsValues[ self.VALUE_BDASH ]):   # In B Dash Mode
             bdash_lenght = 0.9
         else:   # Not In B Dash Mode
-            bdash_lenght = 0.5
+            bdash_lenght = 0.6
 
         self.__speedsValues[ self.VALUE_SPEED ] =  int( round( self.__speedsValues[ self.VALUE_SPEED ] * bdash_lenght ) )
         self.__speedsValues[ self.VALUE_STEERING ] =  int( round( self.__speedsValues[ self.VALUE_STEERING ] * bdash_lenght) )
